@@ -5,6 +5,7 @@ import AppThemeProvider from "@/providers/theme.provider";
 import { CssBaseline } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryClientProvider } from "@/providers/react-query.provider";
+import { Header } from "./layout/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <ReactQueryClientProvider>
           <AppThemeProvider>
             <CssBaseline />
+            <Header />
             {children}
           </AppThemeProvider>
         </ReactQueryClientProvider>

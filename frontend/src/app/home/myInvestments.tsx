@@ -1,7 +1,7 @@
 import BarChart from "@/components/chart/BarChart";
 import React from "react";
 import { BarChartData, LineChartData } from "./lib/data";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { LineChart } from "@/components/chart/LineChart";
 import { Card } from "@/components/base/Card";
 import { Balance } from "./balance";

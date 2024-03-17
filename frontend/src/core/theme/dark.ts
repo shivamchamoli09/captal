@@ -22,6 +22,9 @@ export const darkTheme: ThemeOptions = {
     warning: {
       main: "#FFFF00",
     },
+    text: {
+      primary: "#FFF",
+    },
   },
   typography: TypographyThemeProps,
   components: {
@@ -36,9 +39,56 @@ export const darkTheme: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundColor: "#1B2028",
-          borderRadius: "6px",
+          borderRadius: "20px",
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           border: "1px solid #303030",
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&.Mui-selected": {
+            color: "#FFF",
+            fontWeight: 700,
+            textDecoration: "underline",
+          },
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          ".MuiDialogContent-root": {
+            paddingTop: "10px",
+          },
+        },
+        paper: {
+          "&.MuiPaper-root": {
+            display: "flex",
+            gap: "16px",
+            padding: "10px",
+            borderRadius: "20px",
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontSize: 14,
+          letterSpacing: 1,
+          color: "#FFF",
+          textTransform: "none",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          ".Mui-focused": {
+            color: "#FFF",
+          },
         },
       },
     },

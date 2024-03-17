@@ -21,13 +21,13 @@ const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
       >
         <Image src={"/bitcoin.png"} width={60} height={60} alt="BTC" />
         <Box>
-          <Typography variant="h3">Top Performer</Typography>
+          <Typography variant="h5">Top Performer</Typography>
           <Stack direction={"row"} alignItems={"center"} mt={1}>
-            <Typography variant="h3">$4200</Typography>
+            <Typography variant="h4">$4200</Typography>
 
             <Box ml="auto" display={"flex"} alignItems={"center"}>
               <NorthEastIcon color="success" />
-              <Typography variant="h5" color={'success.main'}>$42</Typography>
+              <Typography variant="h6" color={'success.main'}>$42</Typography>
             </Box>
           </Stack>
         </Box>
@@ -44,13 +44,13 @@ const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
       >
         <Image src={"/bitcoin.png"} width={60} height={60} alt="BTC" />
         <Box>
-          <Typography variant="h3">Low Performer</Typography>
+          <Typography variant="h5">Low Performer</Typography>
           <Stack direction={"row"} alignItems={"center"} mt={1}>
-            <Typography variant="h3">$4200</Typography>
+            <Typography variant="h4">$4200</Typography>
 
             <Box ml="auto" display={"flex"} alignItems={"center"}>
               <SouthWestIcon color="error" />
-              <Typography variant="h5" color={'error.main'}>$42</Typography>
+              <Typography variant="h6" color={'error.main'}>$42</Typography>
             </Box>
           </Stack>
         </Box>

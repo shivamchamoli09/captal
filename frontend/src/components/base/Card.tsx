@@ -5,9 +5,9 @@ interface IMuiCard extends CardProps {
   children?: React.ReactNode;
 }
 
-const Card: React.FC<IMuiCard> = ({ children, ...props }) => {
+const Card: React.FC<IMuiCard> = ({ children, sx, ...props }) => {
   return (
-    <MuiCard sx={{ p: 2 }} {...props}>
+    <MuiCard sx={{ p: 2, ...sx }} {...props}>
       {children}
     </MuiCard>
   );

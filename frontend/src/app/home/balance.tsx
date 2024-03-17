@@ -12,10 +12,10 @@ const Balance: React.FC<IBalance> = (props) => {
     <Card>
       <Box display={"flex"} justifyContent={"space-between"}>
         <Box>
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h4" gutterBottom fontWeight={'medium'}>
             Balance
           </Typography>
-          <Typography variant="h2">$ 68.778,44</Typography>
+          <Typography variant="h3">$ 68.778,44</Typography>
         </Box>
         <Typography
           variant="caption"
@@ -28,7 +28,7 @@ const Balance: React.FC<IBalance> = (props) => {
 
       <Grid container sx={{ justifyContent: "space-between", mt: 2 }}>
         <Grid item xs={6}>
-          <Typography variant="h5">Income</Typography>
+          <Typography variant="h6">Income</Typography>
           <Stack direction={"row"} alignItems={"center"}>
             <NorthEastIcon color={"success"} />
             <Typography variant="body1" color={"success.main"}>
@@ -38,7 +38,7 @@ const Balance: React.FC<IBalance> = (props) => {
         </Grid>
 
         <Grid item xs={6} textAlign={"end"}>
-          <Typography variant="h5">Expenses</Typography>
+          <Typography variant="h6">Expenses</Typography>
           <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}>
             <SouthWestIcon color="error" />
             <Typography variant="body1" color="error">
