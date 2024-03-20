@@ -7,12 +7,15 @@ import { LOCAL_STORAGE_KEYS } from "@/core/const/storage.const";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import { ConfirmationDialog } from "@/components/common/dialogs/confirmationDialog";
+import { CurrencyListDialog } from "./currenyListing/currencyDialog";
 
 interface IMipList {}
 
 const MipList: React.FC<IMipList> = () => {
   const [confirmDeletion, setConfirmDeletion] = useState<boolean>(false);
   const [currentMip, setCurrentMip] = useState<MipSchemaType>();
+  const [showCurrencyListDialog, setShowCurrencyListDialog] =
+    useState<boolean>(false);
   const openConfirmationDelete = () => setConfirmDeletion(true);
   const closeConfirmationDelete = () => {
     setCurrentMip(undefined);
@@ -51,9 +54,10 @@ const MipList: React.FC<IMipList> = () => {
             <MipDetails
               {...mip}
               onDelete={(mip) => {
-                openConfirmationDelete();
                 setCurrentMip(mip);
+                openConfirmationDelete();
               }}
+              onClick={() => setShowCurrencyListDialog(true)}
             />
           </Grid>
         ))}
@@ -64,6 +68,7 @@ const MipList: React.FC<IMipList> = () => {
         onClose={closeConfirmationDelete}
         onSubmit={handleDeleteMip}
       />
+      <CurrencyListDialog open={showCurrencyListDialog} />
     </>
   );
 };

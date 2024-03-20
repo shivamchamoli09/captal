@@ -8,6 +8,7 @@ import { DeleteForever, DeleteOutlineOutlined } from "@mui/icons-material";
 
 interface IMipDetails extends MipSchemaType {
   onDelete?: (item: MipSchemaType) => void;
+  onClick?: () => void;
 }
 
 const MipDetails: React.FC<IMipDetails> = (props) => {
@@ -31,7 +32,9 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
         </IconWrapper>
 
         <Box>
-          <Typography variant="h5">{props.name}</Typography>
+          <Typography variant="h5" onClick={props.onClick}>
+            {props.name}
+          </Typography>
           <Typography variant="body1">
             {props.currencies?.length} currencies
           </Typography>

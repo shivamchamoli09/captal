@@ -1,5 +1,5 @@
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
-import { Box, Card, List, Stack, SxProps, Typography } from "@mui/material";
+import { Box, List, Stack, SxProps, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
