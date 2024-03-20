@@ -5,7 +5,8 @@ export const darkTheme: ThemeOptions = {
   palette: {
     mode: "dark",
     background: {
-      default: "#303030",
+      default: "#31353F",
+      // default: "#303030",
     },
     primary: {
       main: "#303030",
@@ -39,9 +40,9 @@ export const darkTheme: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundColor: "#1B2028",
-          borderRadius: "20px",
-          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-          border: "1px solid #303030",
+          borderRadius: "15px",
+          boxShadow: "4px 4px 33px 0px rgba(0, 0, 0, 0.05)",
+          border: "1px solid #31353F",
         },
       },
     },
@@ -89,6 +90,29 @@ export const darkTheme: ThemeOptions = {
           ".Mui-focused": {
             color: "#FFF",
           },
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        fontSizeSmall: {
+          fontSize: "16px",
+        },
+        fontSizeMedium: {
+          fontSize: "18px",
+        },
+        fontSizeInherit: {
+          fontSize: "20px",
+        },
+        fontSizeLarge: {
+          fontSize: "24px",
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          padding: "6px",
         },
       },
     },

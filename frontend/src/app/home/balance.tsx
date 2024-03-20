@@ -15,7 +15,7 @@ const Balance: React.FC<IBalance> = (props) => {
           <Typography variant="h4" gutterBottom fontWeight={'medium'}>
             Balance
           </Typography>
-          <Typography variant="h3">$ 68.778,44</Typography>
+          <Typography variant="h3">$68.778,44</Typography>
         </Box>
         <Typography
           variant="caption"

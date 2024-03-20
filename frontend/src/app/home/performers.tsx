@@ -27,7 +27,9 @@ const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
 
             <Box ml="auto" display={"flex"} alignItems={"center"}>
               <NorthEastIcon color="success" />
-              <Typography variant="h6" color={'success.main'}>$42</Typography>
+              <Typography variant="h6" color={"success.main"}>
+                $42
+              </Typography>
             </Box>
           </Stack>
         </Box>
@@ -50,7 +52,9 @@ const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
 
             <Box ml="auto" display={"flex"} alignItems={"center"}>
               <SouthWestIcon color="error" />
-              <Typography variant="h6" color={'error.main'}>$42</Typography>
+              <Typography variant="h6" color={"error.main"}>
+                $42
+              </Typography>
             </Box>
           </Stack>
         </Box>
