@@ -63,6 +63,8 @@ export const darkTheme: ThemeOptions = {
           ".MuiDialogContent-root": {
             paddingTop: "10px",
           },
+          backdropFilter: "blur(3px)",
+          backgroundColor: "rgba(0,0,30,0.4)",
         },
         paper: {
           "&.MuiPaper-root": {

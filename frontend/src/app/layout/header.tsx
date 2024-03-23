@@ -12,8 +12,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { AddCircleOutlineOutlined } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
-import { useAddMipStore } from "@/store";
-import { AddMip } from "@/components/common/mip-dialog";
+import { useMipStore } from "@/store";
+import { AddMip } from "@/components/common/create-mip-dialog";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
-  const { openDialog } = useAddMipStore();
+  const { openCreateDialog } = useMipStore();
 
   return (
     <>
@@ -93,7 +93,7 @@ const Header = () => {
             </Search>
 
             <Tooltip title="Add Mip">
-              <IconButton sx={{ p: 1, ml: 2 }} onClick={openDialog}>
+              <IconButton sx={{ p: 1, ml: 2 }} onClick={openCreateDialog}>
                 <AddCircleOutlineOutlined
                   sx={{ width: "20px", height: "20px" }}
                 />

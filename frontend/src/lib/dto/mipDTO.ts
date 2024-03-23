@@ -6,10 +6,13 @@ export class AddMipDTO implements MipSchemaType {
   currencies: MipSchemaType["currencies"];
   createdDate: MipSchemaType["createdDate"];
 
-  constructor() {
-    this.id = `${Math.floor(Math.random() * 1000)}`;
-    this.name = "";
-    this.currencies = [];
+  constructor(
+    name: MipSchemaType["name"],
+    currencies: MipSchemaType["currencies"]
+  ) {
+    this.id = name;
+    this.name = name;
+    this.currencies = currencies;
     this.createdDate = new Date().toString();
   }
 }

@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { useAddMipStore } from "@/store";
+import { useMipStore } from "@/store";
 import { AddMipForm } from "./form";
 import { Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import { AddMipDTO } from "@/lib/dto/mipDTO";
 import { MAX_MIP_CREATE_LIMIT } from "@/core/const/mip.const";
 import { LOCAL_STORAGE_KEYS } from "@/core/const/storage.const";
 import { getFromLocalStorage, saveToLocalStorage } from "@/core/utils/storage";
+import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -29,7 +30,11 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const AddMip = () => {
-  const { open, closeDialog } = useAddMipStore();
+  const {
+    createMip: open,
+    closeCreateDialog: closeDialog,
+    setMipList,
+  } = useMipStore();
 
   const formState = useForm({
     defaultValues: {
@@ -44,7 +49,6 @@ const AddMip = () => {
       let prevCurrencies: Array<MipSchemaType> = getFromLocalStorage(
         LOCAL_STORAGE_KEYS.mips
       );
-      let newMip = new AddMipDTO();
       if (!prevCurrencies) prevCurrencies = [];
       if (prevCurrencies.length === MAX_MIP_CREATE_LIMIT)
         throw new Error("Max Mip limit is exhausted.");
@@ -52,16 +56,19 @@ const AddMip = () => {
       const duplicateMipName = prevCurrencies.find((p) => p.name === name);
       if (duplicateMipName)
         throw new Error("Mip with given name already exists!");
-      newMip.name = name;
-      newMip.currencies = currencies;
-      prevCurrencies.push(newMip);
-      console.log(prevCurrencies);
-      saveToLocalStorage("mips", JSON.stringify(prevCurrencies));
+      const newMip = new AddMipDTO(name, currencies);
+      prevCurrencies.unshift(newMip);
+      setMipList(prevCurrencies);
       formState.reset();
       closeDialog?.();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleClose = () => {
+    formState.reset();
+    closeDialog();
   };
 
   return (
@@ -70,16 +77,8 @@ const AddMip = () => {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeDialog}
+        onClose={handleClose}
         aria-describedby="add-mip-dialog"
-        slotProps={{
-          backdrop: {
-            style: {
-              backdropFilter: "blur(3px)",
-              backgroundColor: "rgba(0,0,30,0.4)",
-            },
-          },
-        }}
       >
         <DialogTitle>
           <Typography variant="h2" fontWeight={"medium"} gutterBottom>
@@ -87,18 +86,18 @@ const AddMip = () => {
           </Typography>
 
           <Typography variant="body1">
-            Currently you can add max 6 Mips at a time. The first Mip will be
+            Currently you can add max {MAX_MIP_CREATE_LIMIT} Mips. The first Mip will be
             deleted if the limit is exhausted.
           </Typography>
         </DialogTitle>
         <FormProvider {...formState}>
           <form onSubmit={formState.handleSubmit(handleAddMip)}>
             <DialogContent>
-              <AddMipForm />
+              <AddMipForm currencyOptions={CRYPTO_DUMMY_DATA} />
             </DialogContent>
             <DialogActions>
-              <Button onClick={closeDialog}>Close</Button>
-              <Button type="submit" variant="contained" onClick={closeDialog}>
+              <Button onClick={handleClose}>Close</Button>
+              <Button type="submit" variant="contained" onClick={handleClose}>
                 Create
               </Button>
             </DialogActions>

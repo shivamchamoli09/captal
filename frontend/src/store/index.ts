@@ -1,2 +1,2 @@
 export * from "./theme.store";
-export * from "./addMip.store";
+export * from "./mip.store";

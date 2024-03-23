@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MipDetails } from "./mipDetails";
 import { MipSchema, MipSchemaType } from "@/lib/domains/mipSchema";
 import { getFromLocalStorage, saveToLocalStorage } from "@/core/utils/storage";
@@ -8,6 +8,7 @@ import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import { ConfirmationDialog } from "@/components/common/dialogs/confirmationDialog";
 import { CurrencyListDialog } from "./currenyListing/currencyDialog";
+import { useMipStore } from "@/store";
 
 interface IMipList {}
 
@@ -16,31 +17,36 @@ const MipList: React.FC<IMipList> = () => {
   const [currentMip, setCurrentMip] = useState<MipSchemaType>();
   const [showCurrencyListDialog, setShowCurrencyListDialog] =
     useState<boolean>(false);
+  const closeCurrencylistDialog = () => {
+    setCurrentMip(undefined);
+    setShowCurrencyListDialog(false);
+  };
   const openConfirmationDelete = () => setConfirmDeletion(true);
   const closeConfirmationDelete = () => {
     setCurrentMip(undefined);
     setConfirmDeletion(false);
   };
 
-  let { data: mips, refetch } = useQuery<Array<MipSchemaType>>({
-    queryKey: ["mips"],
-    queryFn: () =>
+  const { mipList: mips, setMipList } = useMipStore();
+
+  useEffect(() => {
+    setMipList(
       getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
         schema: z.array(MipSchema),
-      }),
-  });
+      }) ?? []
+    );
+  }, [setMipList]);
 
   const handleDeleteMip = () => {
     try {
       const mipToDeleteIdx = mips?.findIndex(
-        (m) => m.id === String(currentMip?.id)
+        (m) => m.id == String(currentMip?.id)
       );
       if (!mipToDeleteIdx) throw new Error("Invalid mip provided!");
       let currentMips = Array.from(mips!);
       currentMips.splice(mipToDeleteIdx, 1);
-      saveToLocalStorage(LOCAL_STORAGE_KEYS.mips, JSON.stringify(currentMips));
+      setMipList(currentMips);
       closeConfirmationDelete();
-      refetch();
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +63,10 @@ const MipList: React.FC<IMipList> = () => {
                 setCurrentMip(mip);
                 openConfirmationDelete();
               }}
-              onClick={() => setShowCurrencyListDialog(true)}
+              onClick={() => {
+                setCurrentMip(mip);
+                setShowCurrencyListDialog(true);
+              }}
             />
           </Grid>
         ))}
@@ -68,7 +77,11 @@ const MipList: React.FC<IMipList> = () => {
         onClose={closeConfirmationDelete}
         onSubmit={handleDeleteMip}
       />
-      <CurrencyListDialog open={showCurrencyListDialog} />
+      <CurrencyListDialog
+        open={showCurrencyListDialog}
+        id={currentMip?.id!}
+        onClose={closeCurrencylistDialog}
+      />
     </>
   );
 };

@@ -1,10 +1,18 @@
-import { Card, Box, Typography, Stack, IconButton } from "@mui/material";
+import {
+  Card,
+  Box,
+  Typography,
+  Stack,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import NorthEastIcon from "@mui/icons-material/NorthEast";
 import { IconWrapper } from "@/components/common/IconWrapper";
 import { MipSchemaType } from "@/lib/domains/mipSchema";
-import { DeleteForever, DeleteOutlineOutlined } from "@mui/icons-material";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 interface IMipDetails extends MipSchemaType {
   onDelete?: (item: MipSchemaType) => void;
@@ -32,9 +40,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
         </IconWrapper>
 
         <Box>
-          <Typography variant="h5" onClick={props.onClick}>
-            {props.name}
-          </Typography>
+          <Typography variant="h5">{props.name}</Typography>
           <Typography variant="body1">
             {props.currencies?.length} currencies
           </Typography>
@@ -70,9 +76,17 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
             })}
           </Typography>
 
-          <IconButton onClick={() => props.onDelete?.(props)}>
-            <DeleteOutlineOutlined color="error" fontSize="medium" />
-          </IconButton>
+          <Stack direction={"row"}>
+            <Tooltip title="View details">
+              <IconButton onClick={props.onClick}>
+                <AccountBalanceWalletIcon />
+              </IconButton>
+            </Tooltip>
+
+            <IconButton onClick={() => props.onDelete?.(props)}>
+              <DeleteOutlineOutlined color="error" fontSize="medium" />
+            </IconButton>
+          </Stack>
         </Stack>
       </Box>
     </Card>
