@@ -8,77 +8,123 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { CurrencyTypes } from "@/core/types/currency.type";
-import { getCurrencyPrices } from "@/lib/external/stockPrices";
+import {
+  getCryptoPrices,
+  getCurrencies,
+  getStockPrices,
+} from "@/lib/external/currencyPrices";
 import { useQuery } from "@tanstack/react-query";
+const yf2 = require("yahoo-finance2").default;
+import { useEffect } from "react";
+import { useCurrencyStore } from "@/store/currencies.store";
 
 interface IPricesGrid {}
 
 const columns: GridColDef[] = [
-  { headerName: "ID", field: "id", width: 90 },
+  { headerName: "Symbol", field: "symbol", width: 90 },
   {
     headerName: "Name",
-    field: "name",
-    width: 100,
+    field: "shortName",
+    width: 120,
     editable: true,
   },
   {
-    headerName: "Symbol",
-    field: "symbol",
-    width: 60,
+    headerName: "Currency",
+    field: "currency",
+    type: "string",
+    width: 80,
+  },
+  {
+    headerName: "Market Cap",
+    field: "marketCap",
+    type: "number",
+    width: 130,
+    editable: true,
+  },
+  {
+    headerName: "Regular Volume",
+    field: "regularMarketVolume",
+    type: "number",
+    width: 110,
+    editable: true,
+  },
+  {
+    headerName: "Shares Outstanding",
+    field: "sharesOutstanding",
+    type: "number",
+    width: 130,
     editable: true,
   },
   {
     headerName: "Current price",
-    field: "current_price",
+    field: "regularMarketPrice",
     type: "number",
-    width: 110,
+    width: 90,
     editable: true,
   },
   {
-    headerName: "Market Cap",
-    field: "market_cap",
+    headerName: "Open",
+    field: "regularMarketOpen",
     type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    headerName: "Total Volume",
-    field: "total_volume",
-    type: "number",
-    width: 110,
+    width: 90,
     editable: true,
   },
   {
     headerName: "High",
-    field: "high_24h",
+    field: "regularMarketDayHigh",
     type: "number",
-    width: 110,
+    width: 90,
     editable: true,
   },
   {
     headerName: "Low",
-    field: "low_24h",
+    field: "regularMarketDayLow",
     type: "number",
-    width: 110,
+    width: 90,
     editable: true,
   },
   {
-    headerName: "Total Supply",
-    field: "total_supply",
+    headerName: "Closed",
+    field: "regularMarketPreviousClose",
     type: "number",
-    width: 110,
+    width: 100,
+    editable: true,
+  },
+  {
+    headerName: "Market",
+    field: "marketState",
+    width: 100,
     editable: true,
   },
 ];
 
 const PricesGrid: React.FC<IPricesGrid> = () => {
+  const { setCurrencies } = useCurrencyStore();
   const { data: prices } = useQuery({
     queryKey: ["currencies"],
-    queryFn: async () => await getCurrencyPrices(),
+    queryFn: async () => {
+      const curr = await getCurrencies();
+      setCurrencies([...curr?.stocks, ...curr?.crypto]);
+      return curr;
+    },
+    retry: 0,
+    refetchOnWindowFocus: false,
   });
-  const [value, setValue] = React.useState<keyof typeof CurrencyTypes>(CurrencyTypes.CRYPTO);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: keyof typeof CurrencyTypes) => {
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     console.log("removing");
+  //     yf2._opts.cookieJar.removeAllCookiesSync();
+  //   }, 60_000 * 10);
+  // }, []);
+  const [value, setValue] = React.useState<keyof typeof CurrencyTypes>(
+    CurrencyTypes.CRYPTO
+  );
+
+  const handleChange = (
+    event: React.SyntheticEvent,
+    newValue: keyof typeof CurrencyTypes
+  ) => {
     setValue(newValue);
   };
 
@@ -98,17 +144,14 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
         </TabContext>
       </Box>
       <DataGrid
-        rows={prices.crypto}
+        getRowId={(row) => row.symbol}
+        rows={value === CurrencyTypes.CRYPTO ? prices?.crypto : prices?.stocks}
         columns={columns}
-        // initialState={{
-        //   pagination: {
-        //     paginationModel: {
-        //       pageSize: 5,
-        //     },
-        //   },
-        // }}
-        // pageSizeOptions={[5]}
-        // checkboxSelection
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+        }}
         disableRowSelectionOnClick
       />
     </Box>

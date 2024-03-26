@@ -5,21 +5,65 @@ import {
   Stack,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import NorthEastIcon from "@mui/icons-material/NorthEast";
 import { IconWrapper } from "@/components/common/IconWrapper";
 import { MipSchemaType } from "@/lib/domains/mipSchema";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import { CurrencySchemaType } from "@/lib/domains";
+import { getQuotes } from "@/lib/external/currencyPrices";
+import { useQueryClient } from "@tanstack/react-query";
+import { ProgressIcon, getProgressColor } from "./mip.service";
 
 interface IMipDetails extends MipSchemaType {
   onDelete?: (item: MipSchemaType) => void;
   onClick?: () => void;
+  currentPrices?: Map<string, CurrencySchemaType>;
 }
 
 const MipDetails: React.FC<IMipDetails> = (props) => {
+  const [currentTotalPrice, setCurrentTotalPrice] = useState<number>(0);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!props.currencies?.length) return;
+    async function fetchQuotes() {
+      const symbols = props.currencies?.map((e) => e?.symbol);
+      const currencies = await getQuotes({ symbols: symbols?.join(",") });
+      queryClient.setQueryData([props.id], currencies);
+      let total = 0;
+      for (const c of currencies) {
+        total += c.regularMarketPrice;
+      }
+      setCurrentTotalPrice(total);
+    }
+    fetchQuotes();
+  }, [props.currencies]);
+
+  const totalMipAmount: number = props.currencies?.reduce(
+    (p, c) => p + c.regularMarketPrice,
+    0
+  );
+  const calculateNetDiff = (): number => {
+    return Number((currentTotalPrice - totalMipAmount)?.toFixed(3));
+  };
+  const netDiff = calculateNetDiff();
+
+  const AvatarTemplate = () => {
+    const crypto = props.currencies.find(
+      (e) => e.quoteType === "CRYPTOCURRENCY"
+    );
+    if (crypto?.logoUrl) {
+      return <Image src={crypto.logoUrl!} width={40} height={40} alt="Mip" />;
+    }
+    return <Avatar>{props.currencies?.[0]?.symbol}</Avatar>;
+  };
+
+  if (!props.currencies?.length) return <></>;
+
   return (
     <Card
       sx={{
@@ -30,15 +74,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       }}
     >
       <Stack direction={"row"} gap={2} alignItems={"center"}>
-        <IconWrapper>
-          <Image
-            src={props.currencies[0].image!}
-            width={40}
-            height={40}
-            alt="BTC"
-          />
-        </IconWrapper>
-
+        <AvatarTemplate />
         <Box>
           <Typography variant="h5">{props.name}</Typography>
           <Typography variant="body1">
@@ -47,18 +83,16 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
         </Box>
       </Stack>
       <Box>
-        <Stack direction={"row"} alignItems={"center"} mt={1}>
-          <Typography variant="h4">
-            $
-            {props.currencies
-              ?.reduce((p, c) => p + c.current_price, 0)
-              ?.toFixed(3)}
-          </Typography>
+        <Stack direction={"row"} alignItems={"start"} mt={1}>
+          <Box>
+            <Typography variant="h4" gutterBottom>${currentTotalPrice?.toFixed(3)}</Typography>
+            <Typography variant="body1">${totalMipAmount?.toFixed(3)}</Typography>
+          </Box>
 
           <Box ml="auto" display={"flex"} alignItems={"center"} mb={1}>
-            <NorthEastIcon color="success" />
-            <Typography variant="h6" color={"success.main"}>
-              $42
+            {<ProgressIcon netDiff={netDiff} />}
+            <Typography variant="h6" color={getProgressColor(netDiff)}>
+              ${Math.abs(netDiff)?.toLocaleString?.()}
             </Typography>
           </Box>
         </Stack>
@@ -77,7 +111,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
           </Typography>
 
           <Stack direction={"row"}>
-            <Tooltip title="View details">
+            <Tooltip title="View Holdings">
               <IconButton onClick={props.onClick}>
                 <AccountBalanceWalletIcon />
               </IconButton>

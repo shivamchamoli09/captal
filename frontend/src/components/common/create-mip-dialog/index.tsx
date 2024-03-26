@@ -11,14 +11,13 @@ import { useMipStore } from "@/store";
 import { AddMipForm } from "./form";
 import { Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
 import { MipSchema, MipSchemaType } from "@/lib/domains/mipSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AddMipDTO } from "@/lib/dto/mipDTO";
 import { MAX_MIP_CREATE_LIMIT } from "@/core/const/mip.const";
 import { LOCAL_STORAGE_KEYS } from "@/core/const/storage.const";
 import { getFromLocalStorage, saveToLocalStorage } from "@/core/utils/storage";
-import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
+import { useCurrencyStore } from "@/store/currencies.store";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -35,6 +34,7 @@ const AddMip = () => {
     closeCreateDialog: closeDialog,
     setMipList,
   } = useMipStore();
+  const { currencies: prices } = useCurrencyStore();
 
   const formState = useForm({
     defaultValues: {
@@ -53,7 +53,7 @@ const AddMip = () => {
       if (prevCurrencies.length === MAX_MIP_CREATE_LIMIT)
         throw new Error("Max Mip limit is exhausted.");
       const { name, currencies } = formState.getValues();
-      const duplicateMipName = prevCurrencies.find((p) => p.name === name);
+      const duplicateMipName = prevCurrencies.find((p) => p.name! === name);
       if (duplicateMipName)
         throw new Error("Mip with given name already exists!");
       const newMip = new AddMipDTO(name, currencies);
@@ -86,18 +86,22 @@ const AddMip = () => {
           </Typography>
 
           <Typography variant="body1">
-            Currently you can add max {MAX_MIP_CREATE_LIMIT} Mips. The first Mip will be
-            deleted if the limit is exhausted.
+            Currently you can add max {MAX_MIP_CREATE_LIMIT} Mips. The first Mip
+            will be deleted if the limit is exhausted.
           </Typography>
         </DialogTitle>
         <FormProvider {...formState}>
           <form onSubmit={formState.handleSubmit(handleAddMip)}>
             <DialogContent>
-              <AddMipForm currencyOptions={CRYPTO_DUMMY_DATA} />
+              <AddMipForm currencyOptions={prices} />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Close</Button>
-              <Button type="submit" variant="contained" onClick={handleClose}>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={formState.handleSubmit(handleAddMip)}
+              >
                 Create
               </Button>
             </DialogActions>

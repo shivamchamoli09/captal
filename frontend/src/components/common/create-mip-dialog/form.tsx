@@ -9,7 +9,8 @@ interface IAddMipForm {
 }
 
 const AddMipForm: React.FC<IAddMipForm> = ({ currencyOptions }) => {
-  const { register, setValue, watch, control } = useFormContext();
+  const { register, setValue } = useFormContext();
+ 
   return (
     <Stack direction={"row"} flexDirection={"column"} gap={3}>
       <TextField label="Name" {...register("name")} />
@@ -20,7 +21,7 @@ const AddMipForm: React.FC<IAddMipForm> = ({ currencyOptions }) => {
         onChange={(_, value) => {
           setValue("currencies", value);
         }}
-        getOptionLabel={(option) => `${option.name}`}
+        getOptionLabel={(option) => `${option.shortName}`}
         multiple
         disableCloseOnSelect
         renderInput={(params) => (

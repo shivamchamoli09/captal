@@ -1,11 +1,12 @@
+import { CurrencyListSchemaType } from "@/lib/domains";
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
-import { Box, List, Stack, SxProps, Typography } from "@mui/material";
+import { getDailyGainers } from "@/lib/external/currencyPrices";
+import { Avatar, Box, List, Stack, SxProps, Typography } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
 
-interface ITransactions {
-  transactions?: Array<CryptoSchemaType>;
-}
+interface ITransactions {}
 
 const boxStyles: SxProps = {
   display: "flex",
@@ -14,7 +15,14 @@ const boxStyles: SxProps = {
   alignItems: "center",
 };
 
-const Transactions: React.FC<ITransactions> = ({ transactions }) => {
+const Transactions: React.FC<ITransactions> = () => {
+  const { data: transactions } = useQuery<CurrencyListSchemaType>({
+    queryKey: ["dailyGainers"],
+    queryFn: async () => await getDailyGainers(),
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
+
   if (!transactions?.length)
     return (
       <Box sx={boxStyles}>
@@ -28,33 +36,30 @@ const Transactions: React.FC<ITransactions> = ({ transactions }) => {
     <Box p={1}>
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography variant="h2" fontWeight={"medium"}>
-          Transactions
-        </Typography>
-        <Typography component={"a"} variant="caption">
-          {"View all " + " >"}
+          Top 5 Gainers
         </Typography>
       </Stack>
 
       <List>
         {transactions?.map((tran) => (
           <Stack
-            key={tran.id}
+            key={tran.symbol}
             direction={"row"}
             justifyContent={"space-between"}
             mt={2}
+            alignItems={"center"}
           >
-            <Box display={"flex"} gap={2} alignItems={"center"}>
-              <Image src={tran.image!} width={30} height={30} alt="Currency" />
-              <Typography variant="h5" fontWeight="normal">
-                {tran.name}
-              </Typography>
-            </Box>
+            {/* <Box display={"flex"} gap={2} alignItems={"center"}> */}
+            <Avatar sx={{ height: "32px", width: "32px" }}>
+              {tran.symbol}
+            </Avatar>
+            <Typography variant="h6" fontWeight="normal" ml={1} width={"180px"}>
+              {tran.shortName}
+            </Typography>
 
-            <Box>
-              <Typography variant="body1" fontWeight={"medium"}>
-                $ {tran.current_price?.toLocaleString?.()}
-              </Typography>
-            </Box>
+            <Typography variant="body1" fontWeight={"medium"} ml="auto">
+              ${tran.regularMarketPrice?.toLocaleString?.()}
+            </Typography>
           </Stack>
         ))}
       </List>

@@ -12,14 +12,17 @@ const Balance: React.FC<IBalance> = (props) => {
     <Card>
       <Box display={"flex"} justifyContent={"space-between"}>
         <Box>
-          <Typography variant="h4" gutterBottom fontWeight={'medium'}>
+          <Typography variant="h4" gutterBottom fontWeight={"medium"}>
             Balance
           </Typography>
           <Typography variant="h3">$68.778,44</Typography>
         </Box>
+
         <Typography
           variant="caption"
           color={"success.main"}
+          display={'flex'}
+          alignItems="center"
         >
           <ArrowUpwardIcon />
           4.8%
