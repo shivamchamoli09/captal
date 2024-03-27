@@ -152,6 +152,7 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
             showQuickFilter: true,
           },
         }}
+        sx={{ ".MuiDataGrid-footerContainer": { display: "none" } }}
         disableRowSelectionOnClick
       />
     </Box>

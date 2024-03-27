@@ -96,11 +96,17 @@ const AddMip = () => {
               <AddMipForm currencyOptions={prices} />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Close</Button>
+              <Button variant="text" onClick={handleClose}>
+                Close
+              </Button>
               <Button
+                variant="text"
                 type="submit"
-                variant="contained"
                 onClick={formState.handleSubmit(handleAddMip)}
+                disabled={
+                  !formState.formState.isValid ||
+                  !formState.getValues("currencies")?.length
+                }
               >
                 Create
               </Button>

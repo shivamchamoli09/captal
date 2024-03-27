@@ -17,6 +17,7 @@ import { CurrencySchemaType } from "@/lib/domains";
 import { getQuotes } from "@/lib/external/currencyPrices";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProgressIcon, getProgressColor } from "./mip.service";
+import { useMipStore } from "@/store";
 
 interface IMipDetails extends MipSchemaType {
   onDelete?: (item: MipSchemaType) => void;
@@ -27,13 +28,18 @@ interface IMipDetails extends MipSchemaType {
 const MipDetails: React.FC<IMipDetails> = (props) => {
   const [currentTotalPrice, setCurrentTotalPrice] = useState<number>(0);
   const queryClient = useQueryClient();
+  const { setMipCurrentBalance } = useMipStore();
 
   useEffect(() => {
     if (!props.currencies?.length) return;
     async function fetchQuotes() {
       const symbols = props.currencies?.map((e) => e?.symbol);
-      const currencies = await getQuotes({ symbols: symbols?.join(",") });
+      const currencies = (await getQuotes({
+        symbols: symbols?.join(","),
+      })) as Array<CurrencySchemaType>;
       queryClient.setQueryData([props.id], currencies);
+      const bal = currencies?.reduce((p, c) => p + c.regularMarketPrice, 0);
+      setMipCurrentBalance(props.id!, bal);
       let total = 0;
       for (const c of currencies) {
         total += c.regularMarketPrice;
@@ -41,7 +47,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       setCurrentTotalPrice(total);
     }
     fetchQuotes();
-  }, [props.currencies]);
+  }, [props.currencies, props.id, queryClient]);
 
   const totalMipAmount: number = props.currencies?.reduce(
     (p, c) => p + c.regularMarketPrice,
@@ -85,8 +91,12 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       <Box>
         <Stack direction={"row"} alignItems={"start"} mt={1}>
           <Box>
-            <Typography variant="h4" gutterBottom>${currentTotalPrice?.toFixed(3)}</Typography>
-            <Typography variant="body1">${totalMipAmount?.toFixed(3)}</Typography>
+            <Typography variant="h4" gutterBottom>
+              ${currentTotalPrice?.toFixed(3)}
+            </Typography>
+            <Typography variant="body1">
+              ${totalMipAmount?.toFixed(3)}
+            </Typography>
           </Box>
 
           <Box ml="auto" display={"flex"} alignItems={"center"} mb={1}>

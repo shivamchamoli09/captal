@@ -29,13 +29,6 @@ export const darkTheme: ThemeOptions = {
   },
   typography: TypographyThemeProps,
   components: {
-    // MuiCssBaseline: {
-    //   styleOverrides: {
-    //     body: {
-    //       backgroundColor: "#303030",
-    //     },
-    //   },
-    // },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -83,6 +76,7 @@ export const darkTheme: ThemeOptions = {
           letterSpacing: 1,
           color: "#FFF",
           textTransform: "none",
+          // background: "#31353F",
         },
       },
     },

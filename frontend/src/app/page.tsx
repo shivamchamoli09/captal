@@ -8,6 +8,8 @@ import { PricesGrid } from "./home/prices/pricesGrid";
 import { Transactions } from "./home/transactions";
 import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
 import { MipList } from "./home/mips/mipList";
+import { BlogList } from "./home/blogs/blogList";
+import { FeedBackForm } from "./home/feedback";
 
 export default function Home() {
   return (
@@ -20,12 +22,21 @@ export default function Home() {
           </Grid>
           <Grid item md={3} xs={12}>
             <Card>
-              <Transactions transactions={CRYPTO_DUMMY_DATA.slice(0, 7)} />
+              <Transactions />
             </Card>
           </Grid>
         </Grid>
 
         <PricesGrid />
+
+        <Grid container mt={8} spacing={2}>
+          <Grid item md={8} xs={12}>
+            <BlogList />
+          </Grid>
+          <Grid item md={4} xs={8}>
+            <FeedBackForm />
+          </Grid>
+        </Grid>
       </Stack>
     </Stack>
   );

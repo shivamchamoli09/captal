@@ -39,12 +39,12 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
         >
           <Box display={"flex"} gap={2} alignItems={"center"} width={180}>
             <AvatarTemplate currency={tran} />
-            <Typography variant="h6" fontWeight="normal">
+            <Typography variant="h6" >
               {tran.shortName}
             </Typography>
           </Box>
 
-          <Typography variant="body1" fontWeight={"medium"} width={100} ml={2}>
+          <Typography variant="h6" width={100} ml={2}>
             ${tran.regularMarketPrice?.toLocaleString?.()}
           </Typography>
 
@@ -68,7 +68,7 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
             </Typography>
           </Stack>
           <Box>
-            <Typography variant="body1" fontWeight={"medium"} width={100}>
+            <Typography variant="h6" width={100}>
               ${tran.latestRegularMarketPrice?.toLocaleString?.()}
             </Typography>
           </Box>
