@@ -1,3 +1,4 @@
+import { Card } from "@/components/base/Card";
 import { CurrencyListSchemaType } from "@/lib/domains";
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
 import { getDailyGainers } from "@/lib/external/currencyPrices";
@@ -33,9 +34,14 @@ const Transactions: React.FC<ITransactions> = () => {
       </Box>
     );
   return (
-    <Box p={1}>
+    <Card sx={{ p: 2 }}>
       <Stack direction={"row"} justifyContent={"space-between"}>
-        <Typography variant="h2" fontWeight={"medium"}>
+        <Typography
+          variant="h2"
+          fontWeight={"medium"}
+          width={"100%"}
+          textAlign={"center"}
+        >
           Top 5 Gainers
         </Typography>
       </Stack>
@@ -49,21 +55,37 @@ const Transactions: React.FC<ITransactions> = () => {
             mt={2}
             alignItems={"center"}
           >
-            {/* <Box display={"flex"} gap={2} alignItems={"center"}> */}
-            <Avatar sx={{ height: "32px", width: "32px" }}>
-              {tran.symbol}
-            </Avatar>
-            <Typography variant="h6" fontWeight="normal" ml={1} width={"180px"}>
-              {tran.shortName}
-            </Typography>
+            <Box display={"flex"}>
+              <Avatar sx={{ height: "32px", width: "32px" }}>
+                {tran.symbol?.[0]}
+              </Avatar>
+              <Typography
+                variant="body1"
+                fontWeight="normal"
+                ml={1}
+                width={"180px"}
+              >
+                {tran.shortName}
+              </Typography>
+            </Box>
 
-            <Typography variant="body1" fontWeight={"medium"} ml="auto">
-              ${tran.regularMarketPrice?.toLocaleString?.()}
-            </Typography>
+            <Box>
+              <Typography variant="body1" fontWeight={"medium"}>
+                ${tran.regularMarketPrice?.toLocaleString?.()}
+              </Typography>
+              <Typography
+                variant="caption"
+                fontWeight={"medium"}
+                color={"success.main"}
+                ml="auto"
+              >
+                {tran.regularMarketChangePercent?.toFixed(2)}%
+              </Typography>
+            </Box>
           </Stack>
         ))}
       </List>
-    </Box>
+    </Card>
   );
 };
 

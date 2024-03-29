@@ -25,7 +25,6 @@ const FeedBackForm: React.FC = () => {
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
-        mb={4}
         gap={1}
       >
         <Typography variant="h2" gutterBottom>
@@ -38,7 +37,7 @@ const FeedBackForm: React.FC = () => {
         </Typography>
       </Stack>
 
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 2, mt: 2 }}>
         <Stack display={"flex"} flexDirection={"column"} gap={2}>
           <Box display={"flex"} flexDirection={"column"} gap={"5px"}>
             <InputLabel>Name</InputLabel>

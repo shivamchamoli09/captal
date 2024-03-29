@@ -47,33 +47,38 @@ const Balance: React.FC<IBalance> = (props) => {
           <Typography variant="h3">${latestBal?.toLocaleString?.()}</Typography>
         </Box>
 
-        <Typography
-          variant="caption"
-          color={"success.main"}
-          display={"flex"}
-          alignItems="center"
-        >
+        <Stack direction={"row"} alignItems={"center"}>
           <ProgressIcon netDiff={netDiff} />
-          {changePercent}%
-        </Typography>
+          <Typography
+            variant="caption"
+            color={getProgressColor(netDiff)}
+            display={"flex"}
+          >
+            {changePercent}%
+          </Typography>
+        </Stack>
       </Box>
 
       <Grid container sx={{ justifyContent: "space-between", mt: 3 }}>
         <Grid item xs={6}>
-          <Typography variant="h6">Invested</Typography>
-          <Typography variant="body1" color={"success.main"}>
-            ${investedAmount?.toLocaleString?.()}
+          <Typography variant="h6">P&L</Typography>
+          {/* <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}> */}
+          {/* <ProgressIcon netDiff={netDiff} /> */}
+          <Typography
+            variant="h6"
+            color={getProgressColor(netDiff)}
+            fontWeight={"bold"}
+          >
+            ${netDiff?.toLocaleString?.()}
           </Typography>
+          {/* </Stack> */}
         </Grid>
 
         <Grid item xs={6} textAlign={"end"}>
-          <Typography variant="h6">P&L</Typography>
-          <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}>
-            {/* <ProgressIcon netDiff={netDiff} /> */}
-            <Typography variant="body1" color={getProgressColor(netDiff)} fontWeight={'bold'}>
-              ${netDiff?.toLocaleString?.()}
-            </Typography>
-          </Stack>
+          <Typography variant="h6">Invested</Typography>
+          <Typography variant="body1" color={"text"}>
+            ${investedAmount?.toLocaleString?.()}
+          </Typography>
         </Grid>
       </Grid>
     </Card>

@@ -47,7 +47,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       setCurrentTotalPrice(total);
     }
     fetchQuotes();
-  }, [props.currencies, props.id, queryClient]);
+  }, [props.currencies, props.id, queryClient, setMipCurrentBalance]);
 
   const totalMipAmount: number = props.currencies?.reduce(
     (p, c) => p + c.regularMarketPrice,

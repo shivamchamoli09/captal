@@ -1,30 +1,21 @@
-import * as React from "react";
-import { BarChart as B, BarChartProps } from "@mui/x-charts/BarChart";
-import { axisClasses } from "@mui/x-charts";
+import React from "react";
+import {
+  Chart,
+  ChartWrapperOptions,
+  GoogleChartWrapperChartType,
+  ReactGoogleChartProps,
+} from "react-google-charts";
 
-const chartSetting = {
-  yAxis: [
-    {
-      label: "rainfall (mm)",
-    },
-  ],
-  width: 500,
-  height: 300,
-  sx: {
-    [`.${axisClasses.left} .${axisClasses.label}`]: {
-      transform: "translate(-20px, 0)",
-    },
-  },
-};
-
-export default function BarChart(props: BarChartProps) {
-  return (
-    <B
-      xAxis={[{ scaleType: "band", dataKey: "month" }]}
-      {...chartSetting}
-      {...props}
-    />
-  );
+interface IBarChart extends Omit<ReactGoogleChartProps, "chartType"> {
+  chartType?: GoogleChartWrapperChartType;
 }
+
+const BarChart: React.FC<IBarChart> = ({
+  height = 320,
+  chartType = "ComboChart",
+  ...rest
+}) => {
+  return <Chart chartType={chartType} width="100%" height={height} {...rest} />;
+};
 
 export { BarChart };

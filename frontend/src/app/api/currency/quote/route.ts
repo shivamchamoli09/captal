@@ -8,7 +8,12 @@ export async function GET(req: NextRequest) {
     const symbols = searchParams.get("symbols")?.split?.(",");
     if (!symbols?.length)
       return Response.json({ status: 400, message: "Invalid Input" });
-    const fields = ["regularMarketPrice", "regularMarketTime"];
+    const fields = [
+      "regularMarketPrice",
+      "regularMarketChangePercent",
+      "shortName",
+      "longName",
+    ];
     let result = [];
     for (const q of symbols) {
       result.push(

@@ -4,7 +4,11 @@ import yahooFinance from "yahoo-finance2";
 
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const queryOptions = { count: 5, region: "US", lang: "en-US" };
+    const queryOptions = {
+      count: 5,
+      region: "US",
+      lang: "en-US",
+    };
     const result = await yahooFinance.dailyGainers(queryOptions, {
       validateResult: false,
     });

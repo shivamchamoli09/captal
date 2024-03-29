@@ -1,14 +1,14 @@
-import BarChart from "@/components/chart/BarChart";
 import React from "react";
 import { BarChartData, LineChartData } from "./lib/data";
 import { Box, Grid, Stack } from "@mui/material";
-import { LineChart } from "@/components/chart/LineChart";
 import { Card } from "@/components/base/Card";
 import { Balance } from "./balance";
 import { TopBadPerformer } from "./performers";
-interface ITopCurrencies {}
+import { PieChartWithTabs } from "./charts/pieChartWithTabs";
+import { BarChartLayout } from "./charts/barChartLayout";
+import { DumbellChart } from "@/components/chart/DumbellChart";
 
-const valueFormatter = (value: number) => `${value}mm`;
+interface ITopCurrencies {}
 
 const MyInvestments: React.FC<ITopCurrencies> = () => {
   return (
@@ -30,25 +30,12 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
       <Grid item xs={12} md={9}>
         <Card>
           <Grid container spacing={2} justifyContent={"space-between"}>
-            <Grid item md={6} xs={12}>
-              <LineChart
-                series={[
-                  { data: LineChartData.pData, label: "pv", type: "line" },
-                  { data: LineChartData.uData, label: "uv", type: "line" },
-                ]}
-                xAxis={[{ scaleType: "point", data: LineChartData.xLabels }]}
-              />
+            <Grid item md={4} xs={12}>
+              <PieChartWithTabs />
             </Grid>
-            <Grid item md={6} xs={12}>
-              <BarChart
-                dataset={BarChartData}
-                series={[
-                  { dataKey: "BTC", label: "Bitcoin", valueFormatter },
-                  { dataKey: "ETH", label: "Ethereum", valueFormatter },
-                  { dataKey: "NYSE", label: "Apple", valueFormatter },
-                  { dataKey: "NSE", label: "Reliance", valueFormatter },
-                ]}
-              />
+            <Grid item md={7} xs={12}>
+              {/* <DumbellChart /> */}
+              <BarChartLayout />
             </Grid>
           </Grid>
         </Card>

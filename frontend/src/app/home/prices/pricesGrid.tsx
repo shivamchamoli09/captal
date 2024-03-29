@@ -3,20 +3,14 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import Tab from "@mui/material/Tab";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 import { CurrencyTypes } from "@/core/types/currency.type";
 import {
-  getCryptoPrices,
   getCurrencies,
-  getStockPrices,
 } from "@/lib/external/currencyPrices";
 import { useQuery } from "@tanstack/react-query";
-const yf2 = require("yahoo-finance2").default;
-import { useEffect } from "react";
 import { useCurrencyStore } from "@/store/currencies.store";
+import { Tabs } from "@/components/base/Tabs";
+import { Card } from "@/components/base/Card";
 
 interface IPricesGrid {}
 
@@ -121,27 +115,16 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
     CurrencyTypes.CRYPTO
   );
 
-  const handleChange = (
-    event: React.SyntheticEvent,
-    newValue: keyof typeof CurrencyTypes
-  ) => {
-    setValue(newValue);
-  };
-
   if (!prices) return <>Loading...</>;
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Card sx={{ height: 400, width: "100%" }}>
       <Box sx={{ width: "100%", typography: "body1" }}>
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              {Object.keys(CurrencyTypes).map((currency) => (
-                <Tab key={currency} label={currency} value={currency} />
-              ))}
-            </TabList>
-          </Box>
-        </TabContext>
+        <Tabs
+          tabs={Object.keys(CurrencyTypes)}
+          value={value}
+          onChange={(val) => setValue(val as typeof value)}
+        />
       </Box>
       <DataGrid
         getRowId={(row) => row.symbol}
@@ -155,7 +138,7 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
         sx={{ ".MuiDataGrid-footerContainer": { display: "none" } }}
         disableRowSelectionOnClick
       />
-    </Box>
+    </Card>
   );
 };
 

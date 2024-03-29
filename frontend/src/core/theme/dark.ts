@@ -29,6 +29,23 @@ export const darkTheme: ThemeOptions = {
   },
   typography: TypographyThemeProps,
   components: {
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: "4px",
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: "whitesmoke",
+          ":hover": {
+            textDecoration: "underline",
+          },
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -42,6 +59,11 @@ export const darkTheme: ThemeOptions = {
     MuiTab: {
       styleOverrides: {
         root: {
+          textTransform: "capitalize",
+          letterSpacing: "1px",
+          ":hover *": {
+            borderRadius: "10px",
+          },
           "&.Mui-selected": {
             color: "#FFF",
             fontWeight: 700,
