@@ -22,20 +22,31 @@ const PieChartWithTabs: React.FC = () => {
   }, [pieChartData, pieChartProfitData, pieChartBalanceData, value]);
   return (
     <Box>
-      <Stack>
-        <Tabs
-          tabs={["Balance", "Profit", "Invested"]}
-          value={value}
-          onChange={(val) => setValue(val as typeof value)}
-        />
-      </Stack>
+      {/* <Stack> */}
+      <Tabs
+        tabs={["Balance", "Profit", "Invested"]}
+        value={value}
+        onChange={(val) => setValue(val as typeof value)}
+      />
+      {/* </Stack> */}
 
       <PieChart
         width={400}
         height={320}
         data={chartData}
-        loader={<CircularProgress />}
         options={{
+          colors: [
+            "#191970",
+            "#556B2F",
+            "#008B8B",
+            "#FF69B4",
+            "#FFA500",
+            "#800080",
+            "#800020",
+            "#228B22",
+            "#000080",
+            "#008080",
+          ],
           tooltip: {
             y: {
               formatter: (val) => {

@@ -18,9 +18,9 @@ export default function Home() {
         <MyInvestments />
 
         <Box mt={2}>
-          <Typography variant="h3" gutterBottom pl={1} fontWeight={'normal'}>
+          {/* <Typography variant="h3" gutterBottom pl={1} fontWeight={'normal'}>
             My Mips
-          </Typography>
+          </Typography> */}
           <Grid container spacing={2}>
             <Grid item md={9} xs={12}>
               <MipList />

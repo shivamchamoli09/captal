@@ -10,12 +10,16 @@ export const darkTheme: ThemeOptions = {
     },
     primary: {
       main: "#303030",
+      dark: "rgb(4 119 199 / 32%)",
+      //rgb(8 99 162 / 32%)
+      // "radial-gradient(164.42% 139.2% at 0% 3.17%, rgb(4 119 199 / 32%) 0%, rgba(255, 222, 106, 0.26) 100%)",
     },
     secondary: {
       main: "#424242",
     },
     success: {
       main: "#008000",
+      light: "rgb(4 119 199 / 32%)",
     },
     error: {
       main: "#EE4B2B",
@@ -131,6 +135,14 @@ export const darkTheme: ThemeOptions = {
       styleOverrides: {
         root: {
           padding: "6px",
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          width: "36px",
+          height: "36px",
         },
       },
     },

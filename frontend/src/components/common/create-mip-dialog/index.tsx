@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
@@ -35,7 +34,7 @@ const AddMip = () => {
     setMipList,
   } = useMipStore();
   const { currencies: prices } = useCurrencyStore();
-
+  const [errorMsg, setErrorMsg] = React.useState<string | null>("");
   const formState = useForm({
     defaultValues: {
       name: "",
@@ -46,30 +45,35 @@ const AddMip = () => {
 
   const handleAddMip = () => {
     try {
+      setErrorMsg(null);
       let prevCurrencies: Array<MipSchemaType> = getFromLocalStorage(
         LOCAL_STORAGE_KEYS.mips
       );
       if (!prevCurrencies) prevCurrencies = [];
       if (prevCurrencies.length === MAX_MIP_CREATE_LIMIT)
-        throw new Error("Max Mip limit is exhausted.");
+        throw new Error("Max Mip limit is exhausted. Please remove few existing mips.");
       const { name, currencies } = formState.getValues();
       const duplicateMipName = prevCurrencies.find((p) => p.name! === name);
       if (duplicateMipName)
-        throw new Error("Mip with given name already exists!");
+        throw new Error("Mip with this name already exists!");
       const newMip = new AddMipDTO(name, currencies);
       prevCurrencies.unshift(newMip);
       setMipList(prevCurrencies);
       formState.reset();
-      closeDialog?.();
-    } catch (error) {
+      handleClose?.();
+    } catch (error: any) {
       console.log(error);
+      setErrorMsg(error?.message);
     }
   };
 
   const handleClose = () => {
     formState.reset();
+    setErrorMsg(null);
     closeDialog();
   };
+  const isFormValid = () =>
+    formState.formState.isValid && formState.watch("currencies")?.length;
 
   return (
     <React.Fragment>
@@ -86,33 +90,37 @@ const AddMip = () => {
           </Typography>
 
           <Typography variant="body1">
-            Currently you can add max {MAX_MIP_CREATE_LIMIT} Mips. The first Mip
-            will be deleted if the limit is exhausted.
+            Currently you can add max {MAX_MIP_CREATE_LIMIT} Mips. Please remove
+            existing mips if your limit is exhausted.
           </Typography>
         </DialogTitle>
-        <FormProvider {...formState}>
-          <form onSubmit={formState.handleSubmit(handleAddMip)}>
-            <DialogContent>
-              <AddMipForm currencyOptions={prices} />
-            </DialogContent>
-            <DialogActions>
-              <Button variant="text" onClick={handleClose}>
-                Close
-              </Button>
-              <Button
-                variant="text"
-                type="submit"
-                onClick={formState.handleSubmit(handleAddMip)}
-                disabled={
-                  !formState.formState.isValid ||
-                  !formState.getValues("currencies")?.length
-                }
-              >
-                Create
-              </Button>
-            </DialogActions>
-          </form>
-        </FormProvider>
+        {open && (
+          <FormProvider {...formState}>
+            <form onSubmit={formState.handleSubmit(handleAddMip)}>
+              <DialogContent>
+                <AddMipForm currencyOptions={prices} />
+              </DialogContent>
+              <DialogActions>
+                {errorMsg && (
+                  <Typography variant="body1" color="error">
+                    {errorMsg}
+                  </Typography>
+                )}
+                <Button variant="text" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button
+                  variant="text"
+                  type="submit"
+                  onClick={formState.handleSubmit(handleAddMip)}
+                  disabled={!isFormValid()}
+                >
+                  Create
+                </Button>
+              </DialogActions>
+            </form>
+          </FormProvider>
+        )}
       </Dialog>
     </React.Fragment>
   );

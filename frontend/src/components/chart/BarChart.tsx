@@ -11,7 +11,7 @@ interface IBarChart extends Omit<ReactGoogleChartProps, "chartType"> {
 }
 
 const BarChart: React.FC<IBarChart> = ({
-  height = 320,
+  height = 290,
   chartType = "ComboChart",
   ...rest
 }) => {

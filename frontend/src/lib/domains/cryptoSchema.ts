@@ -1,7 +1,30 @@
 import z from "zod";
 import { StockSchema } from "./stockSchema";
 
-export const CryptoSchema = StockSchema;
+export const CryptoSchema = StockSchema
+// .omit({
+//   firstTradeDateMilliseconds: true,
+//   regularMarketTime: true,
+//   regularMarketDayRange: true,
+//   fiftyTwoWeekRange: true,
+//   startDate: true,
+// }).extend({
+//   firstTradeDateMilliseconds: z.string().nullish(),
+//   regularMarketTime: z.string().nullish(),
+//   regularMarketDayRange: z
+//     .object({
+//       low: z.number(),
+//       high: z.number(),
+//     })
+//     .nullish(),
+//   fiftyTwoWeekRange: z
+//     .object({
+//       low: z.number(),
+//       high: z.number(),
+//     })
+//     .nullish(),
+//   startDate: z.string().nullish(),
+// });
 // z.object({
 //   language: "en-US",
 //   region: "US",

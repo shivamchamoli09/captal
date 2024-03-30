@@ -34,6 +34,7 @@ const Balance: React.FC<IBalance> = (props) => {
   const netDiff = Number((latestBal - investedAmount)?.toFixed(3));
 
   const changePercent = useMemo(() => {
+    if(!netDiff || !investedAmount) return 0
     return Math.abs((netDiff / investedAmount) * 100)?.toFixed(2);
   }, [netDiff, investedAmount]);
 
@@ -62,8 +63,6 @@ const Balance: React.FC<IBalance> = (props) => {
       <Grid container sx={{ justifyContent: "space-between", mt: 3 }}>
         <Grid item xs={6}>
           <Typography variant="h6">P&L</Typography>
-          {/* <Stack direction={"row"} alignItems={"center"} justifyContent={"end"}> */}
-          {/* <ProgressIcon netDiff={netDiff} /> */}
           <Typography
             variant="h6"
             color={getProgressColor(netDiff)}
@@ -71,7 +70,6 @@ const Balance: React.FC<IBalance> = (props) => {
           >
             ${netDiff?.toLocaleString?.()}
           </Typography>
-          {/* </Stack> */}
         </Grid>
 
         <Grid item xs={6} textAlign={"end"}>

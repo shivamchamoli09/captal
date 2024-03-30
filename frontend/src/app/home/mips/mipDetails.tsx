@@ -5,7 +5,6 @@ import {
   Stack,
   IconButton,
   Tooltip,
-  Avatar,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
@@ -18,6 +17,7 @@ import { getQuotes } from "@/lib/external/currencyPrices";
 import { useQueryClient } from "@tanstack/react-query";
 import { ProgressIcon, getProgressColor } from "./mip.service";
 import { useMipStore } from "@/store";
+import { Avatar } from "@/core/theme/base/Avatar";
 
 interface IMipDetails extends MipSchemaType {
   onDelete?: (item: MipSchemaType) => void;
@@ -65,7 +65,11 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
     if (crypto?.logoUrl) {
       return <Image src={crypto.logoUrl!} width={40} height={40} alt="Mip" />;
     }
-    return <Avatar>{props.currencies?.[0]?.symbol}</Avatar>;
+    return (
+      <Avatar>
+        {props.currencies?.[0]?.symbol?.[0]}
+      </Avatar>
+    );
   };
 
   if (!props.currencies?.length) return <></>;

@@ -62,7 +62,7 @@ const MipList: React.FC<IMipList> = () => {
   if (!mips) return <></>;
   return (
     <>
-      <Grid container spacing={2} height={"100%"} alignItems={"center"}>
+      <Grid container spacing={2} height={"100%"} alignItems={"start"}>
         {mips?.map((mip, index) => (
           <Grid item md={3} xs={6} key={index}>
             <MipDetails

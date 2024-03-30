@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Card,
   Dialog,
@@ -15,10 +14,11 @@ import { CurrencyList } from "./currenyList";
 import { CloseOutlined } from "@mui/icons-material";
 import { useMipStore } from "@/store";
 import Image from "next/image";
-import { CurrencyListSchemaType } from "@/lib/domains";
+import { CurrencyListSchemaType, CurrencySchemaType } from "@/lib/domains";
 import { useQueryClient } from "@tanstack/react-query";
 import { ILatestCurrency } from "@/core/types/currency.type";
 import { ProgressIcon, getProgressColor } from "../mip.service";
+import { Avatar } from "@/core/theme/base/Avatar";
 
 interface ICurrencyListDialog {
   open: boolean;
@@ -43,13 +43,18 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
   const updatedMarketPrices: Array<ILatestCurrency> = useMemo(() => {
     if (!currentMip?.id) return [];
     const currencies = currentMip?.currencies;
-    if (!latestPrices) return currencies;
-    let latestCurr: Array<ILatestCurrency> = Array.from(currencies);
-    for (let i = 0; i < currencies.length; i++) {
-      latestCurr[i].latestRegularMarketPrice =
-        latestPrices[i]?.regularMarketPrice;
-    }
-    return currencies;
+    if (!latestPrices)
+      return currencies?.map((e: CurrencySchemaType) => ({
+        ...e,
+        latestRegularMarketPrice: e?.regularMarketPrice,
+      }));
+    let latestCurr: Array<ILatestCurrency> = Array.from(
+      currencies?.map((e: CurrencySchemaType, i: number) => ({
+        ...e,
+        latestRegularMarketPrice: latestPrices[i]?.regularMarketPrice,
+      }))
+    );
+    return latestCurr;
   }, [currentMip?.id, currentMip?.currencies, latestPrices]);
   const totalAmount = Number(
     currentMip?.currencies
@@ -61,6 +66,7 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
       ?.reduce((p, c) => p + c.latestRegularMarketPrice, 0)
       ?.toFixed(3)
   );
+
   const calculateChangePercent = useMemo(() => {
     return Math.abs(
       ((totalNewAmount - totalAmount) / totalAmount) * 100
@@ -77,7 +83,7 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
     if (crypto) {
       return <Image src={crypto?.logoUrl!} width={30} height={30} alt="Mip" />;
     }
-    return <Avatar>{currencies?.[0]?.symbol}</Avatar>;
+    return <Avatar>{currencies?.[0]?.symbol?.[0]}</Avatar>;
   };
 
   return (

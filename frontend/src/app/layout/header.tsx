@@ -82,7 +82,7 @@ const Header = () => {
             >
               Captal
             </Typography>
-            <Search>
+            {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -90,7 +90,7 @@ const Header = () => {
                 placeholder="Search…"
                 inputProps={{ "aria-label": "search" }}
               />
-            </Search>
+            </Search> */}
 
             <Tooltip title="Add Mip">
               <IconButton sx={{ p: 1, ml: 2 }} onClick={openCreateDialog}>

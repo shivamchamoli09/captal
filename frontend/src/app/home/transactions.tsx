@@ -1,8 +1,9 @@
 import { Card } from "@/components/base/Card";
+import { Avatar } from "@/core/theme/base/Avatar";
 import { CurrencyListSchemaType } from "@/lib/domains";
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
 import { getDailyGainers } from "@/lib/external/currencyPrices";
-import { Avatar, Box, List, Stack, SxProps, Typography } from "@mui/material";
+import { Box, List, Stack, SxProps, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
@@ -23,7 +24,6 @@ const Transactions: React.FC<ITransactions> = () => {
     retry: 0,
     refetchOnWindowFocus: false,
   });
-
   if (!transactions?.length)
     return (
       <Box sx={boxStyles}>
@@ -56,9 +56,7 @@ const Transactions: React.FC<ITransactions> = () => {
             alignItems={"center"}
           >
             <Box display={"flex"}>
-              <Avatar sx={{ height: "32px", width: "32px" }}>
-                {tran.symbol?.[0]}
-              </Avatar>
+              <Avatar>{tran.symbol?.[0]}</Avatar>
               <Typography
                 variant="body1"
                 fontWeight="normal"

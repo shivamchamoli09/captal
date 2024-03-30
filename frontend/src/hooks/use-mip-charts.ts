@@ -1,5 +1,6 @@
 import {
   IBarChartData,
+  IDumbellChartData,
   IPieChartData,
 } from "@/components/chart/types.ts/chart.type";
 import { MipSchemaType } from "@/lib/domains/mipSchema";
@@ -23,6 +24,9 @@ export const useMipChart = ({ mips, currentPrices }: IMipChart) => {
     old: Array<IBarChartData>;
     new: Array<IBarChartData>;
   }>();
+  const [dumbellChartData, setDumbellChart] = useState<
+    Array<IDumbellChartData>
+  >([]);
 
   useEffect(() => {
     const pieData: Array<IPieChartData> = [];
@@ -36,12 +40,13 @@ export const useMipChart = ({ mips, currentPrices }: IMipChart) => {
       old: [["Invested", "Balance"]],
       new: [["Invested", "Balance"]],
     };
+    const dumbellData: Array<IDumbellChartData> = [];
     for (const mip of mips) {
       let total = 0;
       for (const curr of mip.currencies) {
-        total += curr.regularMarketPrice;
+        total += Number(curr.regularMarketPrice?.toFixed?.(3));
       }
-      let currMipBal = currentPrices?.get(mip.name);
+      let currMipBal = Number(currentPrices?.get(mip.name)?.toFixed?.(3));
       pieData.push({ name: mip.name, value: Number(total?.toFixed(3)) });
       pieBalanceData.push({
         name: mip.name,
@@ -59,12 +64,17 @@ export const useMipChart = ({ mips, currentPrices }: IMipChart) => {
       barChart.push([mip.name, total, currMipBal ?? 0]);
       bardChartDiff?.old.push([mip.name, total]);
       bardChartDiff?.new.push([mip.name, currMipBal ?? 0]);
+      dumbellData.push({
+        x: mip.name,
+        y: [total, Number(currMipBal?.toFixed(2))],
+      });
     }
     setPieChartData(pieData);
     setPieChartProfitData(pieProfitData);
     setPieChartBalanceData(pieBalanceData);
     setBarChartData(barChart);
     setBarChartDiffData(bardChartDiff);
+    setDumbellChart(dumbellData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPrices?.size, mips]);
 
@@ -74,5 +84,6 @@ export const useMipChart = ({ mips, currentPrices }: IMipChart) => {
     pieChartBalanceData,
     barChartData,
     barChartDiffData,
+    dumbellChartData,
   };
 };

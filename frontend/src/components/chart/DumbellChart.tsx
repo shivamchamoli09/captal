@@ -1,5 +1,5 @@
 import React from "react";
-import ReactApexChart from "react-apexcharts";
+import ReactApexChart, { Props } from "react-apexcharts";
 
 const series = [
   {
@@ -83,20 +83,14 @@ const options = {
   },
 };
 
-const DumbellChart: React.FC = () => {
-  return (
-    <div>
-      <div id="chart">
-        <ReactApexChart
-          options={options}
-          series={series}
-          type="rangeBar"
-          height={350}
-        />
-      </div>
-      <div id="html-dist"></div>
-    </div>
-  );
+interface IDumbellChart extends Props {}
+
+const DumbellChart: React.FC<IDumbellChart> = ({
+  height = 280,
+  type = "rangeBar",
+  ...props
+}) => {
+  return <ReactApexChart type={type} height={280} {...props} />;
 };
 
 export { DumbellChart };

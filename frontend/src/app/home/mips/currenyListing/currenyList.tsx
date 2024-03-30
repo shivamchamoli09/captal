@@ -1,10 +1,11 @@
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
-import { Avatar, Box, List, Stack, Typography } from "@mui/material";
+import { Box, List, Stack, Typography } from "@mui/material";
 import React, { useCallback } from "react";
 import Image from "next/image";
 import NorthEastIcon from "@mui/icons-material/NorthEast";
 import { ILatestCurrency } from "@/core/types/currency.type";
 import { ProgressIcon, getProgressColor } from "../mip.service";
+import { Avatar } from "@/core/theme/base/Avatar";
 
 interface ICurrencyList {
   currencies?: Array<ILatestCurrency>;
@@ -18,7 +19,7 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
         <Image src={currency?.logoUrl!} width={30} height={30} alt="Currency" />
       );
     }
-    return <Avatar>{currency?.symbol}</Avatar>;
+    return <Avatar>{currency?.symbol?.[0]}</Avatar>;
   };
 
   const calculateChangePercent = useCallback(
@@ -39,9 +40,7 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
         >
           <Box display={"flex"} gap={2} alignItems={"center"} width={180}>
             <AvatarTemplate currency={tran} />
-            <Typography variant="h6" >
-              {tran.shortName}
-            </Typography>
+            <Typography variant="h6">{tran.shortName}</Typography>
           </Box>
 
           <Typography variant="h6" width={100} ml={2}>

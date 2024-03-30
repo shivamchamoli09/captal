@@ -30,9 +30,12 @@ export const getCryptoPrices = async (): Promise<
   z.infer<typeof GetCryptoPricesSchema>
 > => {
   try {
-    const res = CRYPTO_DUMMY_DATA;
-    // return parseSchema(GetCryptoPricesSchema, res);
-    return res;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/crypto`
+    );
+    const data = await res.json();
+    return data;
+    // return parseSchema(GetCryptoPricesSchema, data);
   } catch (error) {
     console.log(error);
     return [];

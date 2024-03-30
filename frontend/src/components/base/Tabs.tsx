@@ -27,18 +27,21 @@ const Tabs: React.FC<ITab> = (props) => {
 
   return (
     <TabContext value={props.value!}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <TabList onChange={handleChange} aria-label="tabs">
-          {props?.tabs?.map((val) => (
-            <Tab
-              sx={{ p: 0, height: "40px", width: "80px" }}
-              key={val}
-              value={val}
-              label={val}
-            />
-          ))}
-        </TabList>
-      </Box>
+      <TabList onChange={handleChange} aria-label="tabs">
+        {props?.tabs?.map((val) => (
+          <Tab
+            sx={{
+              p: 0,
+              ".MuiTabs-indicator": {
+                display: "none",
+              },
+            }}
+            key={val}
+            value={val}
+            label={val}
+          />
+        ))}
+      </TabList>
     </TabContext>
   );
 };
