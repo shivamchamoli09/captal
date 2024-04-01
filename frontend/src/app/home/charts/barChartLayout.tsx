@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { PieChart } from "@/components/chart/PieChart";
+"use client";
+
+import React, { lazy, useState } from "react";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
 import {
@@ -11,11 +12,13 @@ import {
   Stack,
   useTheme,
 } from "@mui/material";
-import { BarChart } from "@/components/chart/BarChart";
+// import BarChart from "@/components/chart/BarChart";
 import { Tabs } from "@/components/base/Tabs";
-import { DumbellChart } from "@/components/chart/DumbellChart";
+// import { DumbellChart } from "@/components/chart/DumbellChart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+const BarChart = lazy(() => import("@/components/chart/BarChart"));
+const DumbellChart = lazy(() => import("@/components/chart/DumbellChart"));
 
 const BarChartLayout: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<"bar" | "dumbell">("bar");

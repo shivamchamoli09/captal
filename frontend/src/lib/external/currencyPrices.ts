@@ -2,7 +2,6 @@ import { z } from "zod";
 import { parseSchema } from "../utils/parser";
 import { YAHOO_COOKIES } from "../constants/yahooCookies.const";
 import { StockSchema } from "../domains/stockSchema";
-import { CRYPTO_DUMMY_DATA } from "../crypto.lib";
 import { CryptoSchema } from "../domains/cryptoSchema";
 import { CurrencyListSchema, CurrencySchema } from "../domains";
 
@@ -16,7 +15,8 @@ export const getStockPrices = async (): Promise<
 > => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nyse`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nyse`,
+      { cache: "no-store" }
     );
     const data = await res.json();
     return parseSchema(GetStockPricesSchema, data);
@@ -31,11 +31,11 @@ export const getCryptoPrices = async (): Promise<
 > => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/crypto`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/crypto`,
+      { cache: "no-store" }
     );
     const data = await res.json();
-    return data;
-    // return parseSchema(GetCryptoPricesSchema, data);
+    return parseSchema(GetCryptoPricesSchema, data);
   } catch (error) {
     console.log(error);
     return [];
@@ -57,7 +57,8 @@ export const getCurrencies = async (): Promise<{
 
 export const getQuotes = async ({ symbols }: { symbols: string }) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/quote?symbols=${symbols}`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/quote?symbols=${symbols}`,
+    { cache: "no-store" }
   );
   const data = await res.json();
   return data;
@@ -65,7 +66,8 @@ export const getQuotes = async ({ symbols }: { symbols: string }) => {
 
 export const getDailyGainers = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/daily-gainers`
+    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/daily-gainers`,
+    { cache: "no-store" }
   );
   const data = await res.json();
   return parseSchema(CurrencyListSchema, data);

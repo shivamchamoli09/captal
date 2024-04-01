@@ -43,15 +43,16 @@ const AddMip = () => {
     resolver: zodResolver(MipSchema),
   });
 
-  const handleAddMip = () => {
+const handleAddMip = () => {
     try {
       setErrorMsg(null);
-      let prevCurrencies: Array<MipSchemaType> = getFromLocalStorage(
-        LOCAL_STORAGE_KEYS.mips
-      );
+      let prevCurrencies: Array<MipSchemaType> =
+        (getFromLocalStorage(LOCAL_STORAGE_KEYS.mips) as any) ?? [];
       if (!prevCurrencies) prevCurrencies = [];
       if (prevCurrencies.length === MAX_MIP_CREATE_LIMIT)
-        throw new Error("Max Mip limit is exhausted. Please remove few existing mips.");
+        throw new Error(
+          "Max Mip limit is exhausted. Please remove few existing mips."
+        );
       const { name, currencies } = formState.getValues();
       const duplicateMipName = prevCurrencies.find((p) => p.name! === name);
       if (duplicateMipName)

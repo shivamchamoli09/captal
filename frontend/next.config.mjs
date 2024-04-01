@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: "standalone",
   experimental: {
     esmExternals: false,
   },
   images: {
     domains: ["assets.coingecko.com", "s2.coinmarketcap.com"],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 

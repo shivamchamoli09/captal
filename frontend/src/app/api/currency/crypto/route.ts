@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import yahooFinance from "yahoo-finance2";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 const symbols = [
   "BTC-USD",
@@ -207,7 +207,7 @@ const symbols = [
   "FLUX-USD",
 ];
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+async function getQuotes(symbols: Array<string>) {
   try {
     let result = [];
     for (const q of symbols) {
@@ -215,9 +215,40 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
         await yahooFinance.quoteCombine(q, {}, { validateResult: false })
       );
     }
+    return result;
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function GET() {
+  try {
+    let pairs = [];
+    let currPair: string[] = [];
+    for (let i = 0; i < symbols.length; i++) {
+      if (i === 0 || i % 15 !== 0) {
+        currPair.push(symbols[i]);
+        if (i === symbols.length - 1) pairs.push(currPair);
+      } else {
+        pairs.push(currPair);
+        currPair = [symbols[i]];
+      }
+    }
+    const promises = [];
+    for (const pair of pairs) {
+      promises.push(getQuotes(pair));
+    }
+    let data = await Promise.all(promises);
+    const result: any[] = [];
+    data.forEach((res) => {
+      result.push(...res);
+    });
     return Response.json(result);
   } catch (error) {
     console.log("error: ", error);
-    return [];
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    return Response.json([]);
   }
 }

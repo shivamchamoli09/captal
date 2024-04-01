@@ -1,10 +1,10 @@
-import { NYSE_DUMMY_DATA } from "@/lib/nyse.lib";
 import { NextRequest } from "next/server";
 import yahooFinance from "yahoo-finance2";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
   try {
-    const searchParams = req?.nextUrl?.searchParams;
     const symbols = searchParams.get("symbols")?.split?.(",");
     if (!symbols?.length)
       return Response.json({ status: 400, message: "Invalid Input" });
@@ -27,5 +27,9 @@ export async function GET(req: NextRequest) {
     return Response.json(result);
   } catch (error) {
     console.log("error: ", error);
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    return Response.json([]);
   }
 }

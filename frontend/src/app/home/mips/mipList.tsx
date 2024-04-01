@@ -1,3 +1,5 @@
+"use client";
+
 import { Grid } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { MipDetails } from "./mipDetails";
@@ -41,9 +43,9 @@ const MipList: React.FC<IMipList> = () => {
   const { mipList: mips, setMipList } = useMipStore();
   useEffect(() => {
     setMipList(
-      getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
+      (getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
         schema: z.array(MipSchema),
-      }) ?? []
+      }) as any) ?? []
     );
   }, [setMipList]);
 

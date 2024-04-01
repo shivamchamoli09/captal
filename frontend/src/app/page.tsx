@@ -1,17 +1,22 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+
 import { MyInvestments } from "./home/myInvestments";
 import { Box, Grid, Stack, SxProps, Typography } from "@mui/material";
-import { Card } from "@/components/base/Card";
 import { PricesGrid } from "./home/prices/pricesGrid";
 import { Transactions } from "./home/transactions";
-import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
 import { MipList } from "./home/mips/mipList";
 import { BlogList } from "./home/blogs/blogList";
 import { FeedBackForm } from "./home/feedback";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isClientReady, setIsClientReadt] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsClientReadt(true);
+  }, []);
+  if(typeof  window === 'undefined') return <></>
+  if(!isClientReady) return <></>
   return (
     <Stack sx={{ p: 3 }} gap={2}>
       <Stack display={"row"} flexDirection={"column"} gap={2}>
@@ -26,7 +31,7 @@ export default function Home() {
               <MipList />
             </Grid>
             <Grid item md={3} xs={12}>
-                <Transactions />
+              <Transactions />
             </Grid>
           </Grid>
         </Box>
@@ -45,3 +50,4 @@ export default function Home() {
     </Stack>
   );
 }
+

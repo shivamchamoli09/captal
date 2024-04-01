@@ -28,4 +28,4 @@ const PieChart: React.FC<IPieChart> = ({ data, options, ...rest }) => {
   );
 };
 
-export { PieChart };
+export default PieChart;

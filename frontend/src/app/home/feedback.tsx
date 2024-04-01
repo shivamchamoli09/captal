@@ -129,7 +129,7 @@ const FeedBackForm: React.FC = () => {
             </Box>
             {feedbackSubmit && (
               <Typography variant="body1" color={"success.main"}>
-                We appreciate your valuable feedback and
+                Thank you for your valuable feedback. We
                 assure you that we are committed to implementing your
                 suggestions promptly to enhance our services.
               </Typography>

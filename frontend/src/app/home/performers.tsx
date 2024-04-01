@@ -1,3 +1,4 @@
+"use client";
 import { Stack, Card, Box, Typography } from "@mui/material";
 import React from "react";
 import Image from "next/image";

@@ -1,9 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 import { google } from "googleapis";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest) {
+  const body = await (req as any).json();
   try {
-    const body = await (req as any).json();
     const { name, email, feedback } = body;
     if (!feedback)
       return new Response(
@@ -27,7 +28,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       auth,
       version: "v4",
     });
-    const response = await sheets.spreadsheets.values.append({
+    await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SPREADSHEET_ID,
       range: "Sheet1!A2:C",
       valueInputOption: "USER_ENTERED",
@@ -38,6 +39,12 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     return Response.json({ message: "Feedback successfully saved!" });
   } catch (error) {
     console.log("error: ", error);
-    return [];
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    return new Response(
+      JSON.stringify({ status: false, message: "Something went wrong!" }),
+      { status: 500 }
+    );
   }
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { BarChartData, LineChartData } from "./lib/data";
 import { Box, Grid, Stack, Theme, Typography, useTheme } from "@mui/material";
@@ -6,7 +8,6 @@ import { Balance } from "./balance";
 import { TopBadPerformer } from "./performers";
 import { PieChartWithTabs } from "./charts/pieChartWithTabs";
 import { BarChartLayout } from "./charts/barChartLayout";
-import { DumbellChart } from "@/components/chart/DumbellChart";
 import { useMipStore } from "@/store";
 import { AddOutlined } from "@mui/icons-material";
 
@@ -39,7 +40,6 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
                 <PieChartWithTabs />
               </Grid>
               <Grid item md={7} xs={12}>
-                {/* <DumbellChart /> */}
                 <BarChartLayout />
               </Grid>
             </Grid>

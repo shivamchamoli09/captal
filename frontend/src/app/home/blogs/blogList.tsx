@@ -1,3 +1,4 @@
+"use"
 import { Box, Card, Chip, Grid, Link, Typography } from "@mui/material";
 import React from "react";
 import Image from "next/image";
@@ -11,7 +12,21 @@ import { Blog5Svg } from "@/static/svgs/blog5";
 
 interface IBlog {}
 
-const blogs = [
+const blogs: Array<{
+  icon: JSX.Element;
+  chipColor:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "error"
+    | "info"
+    | "success"
+    | "warning";
+  chipLabel: string;
+  url?: string;
+  title: string;
+  subtitle: string;
+}> = [
   {
     icon: <Blog1Svg />,
     chipColor: "success",
@@ -36,8 +51,7 @@ const blogs = [
     chipColor: "warning",
     chipLabel: "Crypto",
     url: "https://finance.yahoo.com/news/1-us-cryptocurrency-etf-inflows-131223967.html",
-    title:
-      "US cryptocurrency ETF inflows pick up as bitcoin price recovers",
+    title: "US cryptocurrency ETF inflows pick up as bitcoin price recovers",
     subtitle:
       "Inflows into the nine recently launched exchange-traded funds (ETFs) tied to bitcoin have resumed their upward trajectory this week after the cryptocurrency's price bounced back from its dip last week.",
   },
@@ -92,7 +106,7 @@ const BlogList: React.FC<IBlog> = () => {
               alignItems={"flex-start"}
               p={2}
             >
-              <Chip color={blog.chipColor as const} label={blog.chipLabel!} />
+              <Chip color={blog.chipColor} label={blog.chipLabel!} />
 
               <Link rel="noopener noreferrer" href={blog.url} target="_blank">
                 <Typography variant="h6" gutterBottom>

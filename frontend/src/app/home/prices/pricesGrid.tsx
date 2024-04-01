@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { CurrencyTypes } from "@/core/types/currency.type";
-import {
-  getCurrencies,
-} from "@/lib/external/currencyPrices";
+import { getCurrencies } from "@/lib/external/currencyPrices";
 import { useQuery } from "@tanstack/react-query";
 import { useCurrencyStore } from "@/store/currencies.store";
 import { Tabs } from "@/components/base/Tabs";
@@ -94,7 +92,8 @@ const columns: GridColDef[] = [
 
 const PricesGrid: React.FC<IPricesGrid> = () => {
   const { setCurrencies } = useCurrencyStore();
-  const { data: prices } = useQuery({
+  const { data: prices } = 
+  useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
       const curr = await getCurrencies();
@@ -104,6 +103,14 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
     retry: 0,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    async function getQuotes() {
+      const res = await getCurrencies();
+    }
+
+    getQuotes();
+  }, []);
 
   // useEffect(() => {
   //   setInterval(() => {

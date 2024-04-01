@@ -1,9 +1,12 @@
-import React, { useMemo } from "react";
-import { PieChart } from "@/components/chart/PieChart";
+"use client";
+
+import React, { lazy, useMemo } from "react";
+// import { PieChart } from "@/components/chart/PieChart";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
 import { Box, CircularProgress, Stack, useTheme } from "@mui/material";
 import { Tabs } from "@/components/base/Tabs";
+const PieChart = lazy(() => import("@/components/chart/PieChart"));
 
 const PieChartWithTabs: React.FC = () => {
   const [value, setValue] = React.useState<"Balance" | "Profit" | "Invested">(

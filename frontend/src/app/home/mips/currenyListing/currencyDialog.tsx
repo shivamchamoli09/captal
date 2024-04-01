@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useMemo } from "react";
-import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
 import { CurrencyList } from "./currenyList";
 import { CloseOutlined } from "@mui/icons-material";
 import { useMipStore } from "@/store";
@@ -123,7 +122,13 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
         <Box>
           <CurrencyList currencies={updatedMarketPrices} />
 
-          <Stack direction={"row"} gap={2} justifyContent={"end"}>
+          <Stack
+            direction={"row"}
+            gap={2}
+            justifyContent={"end"}
+            position={"sticky"}
+            sx={{ bottom: 0 }}
+          >
             <Card
               sx={{
                 width: "fit-content",

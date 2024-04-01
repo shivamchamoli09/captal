@@ -18,4 +18,4 @@ const BarChart: React.FC<IBarChart> = ({
   return <Chart chartType={chartType} width="100%" height={height} {...rest} />;
 };
 
-export { BarChart };
+export default BarChart;

@@ -1,3 +1,5 @@
+"use client";
+
 import { Card } from "@/components/base/Card";
 import { Avatar } from "@/core/theme/base/Avatar";
 import { CurrencyListSchemaType } from "@/lib/domains";
@@ -20,7 +22,7 @@ const boxStyles: SxProps = {
 const Transactions: React.FC<ITransactions> = () => {
   const { data: transactions } = useQuery<CurrencyListSchemaType>({
     queryKey: ["dailyGainers"],
-    queryFn: async () => await getDailyGainers(),
+    queryFn: async () => getDailyGainers(),
     retry: 0,
     refetchOnWindowFocus: false,
   });

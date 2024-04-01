@@ -1,8 +1,7 @@
-import { NYSE_DUMMY_DATA } from "@/lib/nyse.lib";
-import { NextApiRequest, NextApiResponse } from "next";
 import yahooFinance from "yahoo-finance2";
+import { isDynamicServerError } from "next/dist/client/components/hooks-server-context";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET() {
   try {
     const queryOptions = {
       count: 5,
@@ -15,5 +14,9 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
     return Response.json(result?.quotes);
   } catch (error) {
     console.log("error: ", error);
+    if (isDynamicServerError(error)) {
+      throw error;
+    }
+    return Response.json([]);
   }
 }

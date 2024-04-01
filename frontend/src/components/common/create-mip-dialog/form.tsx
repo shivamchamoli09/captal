@@ -1,4 +1,3 @@
-import { CRYPTO_DUMMY_DATA } from "@/lib/crypto.lib";
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
 import { Autocomplete, Stack, TextField } from "@mui/material";
 import React from "react";

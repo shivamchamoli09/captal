@@ -93,4 +93,4 @@ const DumbellChart: React.FC<IDumbellChart> = ({
   return <ReactApexChart type={type} height={280} {...props} />;
 };
 
-export { DumbellChart };
+export default DumbellChart;
