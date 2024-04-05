@@ -66,7 +66,7 @@ const MipList: React.FC<IMipList> = () => {
     <>
       <Grid container spacing={2} height={"100%"} alignItems={"start"}>
         {mips?.map((mip, index) => (
-          <Grid item md={3} xs={6} key={index}>
+          <Grid item md={3} sm={6} xs={12} key={index}>
             <MipDetails
               {...mip}
               onDelete={(mip) => {

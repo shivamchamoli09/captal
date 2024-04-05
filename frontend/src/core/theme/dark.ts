@@ -91,6 +91,7 @@ export const darkTheme: ThemeOptions = {
             gap: "16px",
             padding: "10px",
             borderRadius: "20px",
+            maxWidth: "640px",
           },
         },
       },

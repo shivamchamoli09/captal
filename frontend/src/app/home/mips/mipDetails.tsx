@@ -28,26 +28,32 @@ interface IMipDetails extends MipSchemaType {
 const MipDetails: React.FC<IMipDetails> = (props) => {
   const [currentTotalPrice, setCurrentTotalPrice] = useState<number>(0);
   const queryClient = useQueryClient();
-  const { setMipCurrentBalance } = useMipStore();
+  const { setMipCurrentBalance, setIsLoading } = useMipStore();
 
   useEffect(() => {
     if (!props.currencies?.length) return;
     async function fetchQuotes() {
-      const symbols = props.currencies?.map((e) => e?.symbol);
-      const currencies = (await getQuotes({
-        symbols: symbols?.join(","),
-      })) as Array<CurrencySchemaType>;
-      queryClient.setQueryData([props.id], currencies);
-      const bal = currencies?.reduce((p, c) => p + c.regularMarketPrice, 0);
-      setMipCurrentBalance(props.id!, bal);
-      let total = 0;
-      for (const c of currencies) {
-        total += c.regularMarketPrice;
+      try {
+        setIsLoading(true);
+        const symbols = props.currencies?.map((e) => e?.symbol);
+        const currencies = (await getQuotes({
+          symbols: symbols?.join(","),
+        })) as Array<CurrencySchemaType>;
+        queryClient.setQueryData([props.id], currencies);
+        const bal = currencies?.reduce((p, c) => p + c.regularMarketPrice, 0);
+        setMipCurrentBalance(props.id!, bal);
+        let total = 0;
+        for (const c of currencies) {
+          total += c.regularMarketPrice;
+        }
+        setCurrentTotalPrice(total);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
       }
-      setCurrentTotalPrice(total);
     }
     fetchQuotes();
-  }, [props.currencies, props.id, queryClient, setMipCurrentBalance]);
+  }, [props.currencies, props.id, queryClient, setIsLoading, setMipCurrentBalance]);
 
   const totalMipAmount: number = props.currencies?.reduce(
     (p, c) => p + c.regularMarketPrice,
@@ -65,11 +71,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
     if (crypto?.logoUrl) {
       return <Image src={crypto.logoUrl!} width={40} height={40} alt="Mip" />;
     }
-    return (
-      <Avatar>
-        {props.currencies?.[0]?.symbol?.[0]}
-      </Avatar>
-    );
+    return <Avatar>{props.currencies?.[0]?.symbol?.[0]}</Avatar>;
   };
 
   if (!props.currencies?.length) return <></>;

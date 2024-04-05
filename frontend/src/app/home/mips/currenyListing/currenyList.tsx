@@ -28,26 +28,38 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
     },
     []
   );
+
   return (
     <List>
       {currencies?.map((tran) => (
         <Stack
           key={tran.shortName}
           direction={"row"}
-          justifyContent={"space-between"}
+          justifyContent={"flex-start"}
           mb={2}
           alignItems={"center"}
+          gap={2}
         >
-          <Box display={"flex"} gap={2} alignItems={"center"} width={180}>
+          <Box display={"flex"} gap={2} alignItems={"center"}>
             <AvatarTemplate currency={tran} />
-            <Typography variant="h6">{tran.shortName}</Typography>
+            <Typography variant="h6" width={180}>
+              {tran.shortName}
+            </Typography>
           </Box>
 
-          <Typography variant="h6" width={100} ml={2}>
+          <Typography
+            variant="h6"
+            textAlign={"start"}
+            sx={{
+              wordWrap: "break-word",
+            }}
+            width={100}
+            minWidth={100}
+          >
             ${tran.regularMarketPrice?.toLocaleString?.()}
           </Typography>
 
-          <Stack direction={"row"}>
+          <Stack direction={"row"} width={120} minWidth={120}>
             <ProgressIcon
               netDiff={tran.latestRegularMarketPrice - tran.regularMarketPrice}
             />
@@ -57,7 +69,9 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
                 tran.latestRegularMarketPrice - tran.regularMarketPrice
               )}
               fontWeight={"medium"}
-              width={100}
+              sx={{
+                wordWrap: "break-word",
+              }}
             >
               {calculateChangePercent(
                 tran.regularMarketPrice,
@@ -66,11 +80,16 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
               %
             </Typography>
           </Stack>
-          <Box>
-            <Typography variant="h6" width={100}>
-              ${tran.latestRegularMarketPrice?.toLocaleString?.()}
-            </Typography>
-          </Box>
+          <Typography
+            textAlign={"end"}
+            width={100}
+            variant="h6"
+            sx={{
+              wordWrap: "break-word",
+            }}
+          >
+            ${tran.latestRegularMarketPrice?.toLocaleString?.()}
+          </Typography>
         </Stack>
       ))}
     </List>

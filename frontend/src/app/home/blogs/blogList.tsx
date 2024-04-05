@@ -7,8 +7,6 @@ import { Blog2Svg } from "@/static/svgs/blog2";
 import { Blog3Svg } from "@/static/svgs/blog3";
 import { Blog4Svg } from "@/static/svgs/blog4";
 import { Blog5Svg } from "@/static/svgs/blog5";
-// import Lottie from "react-lottie";
-// import * as animationData from "../../../static/json/mobileInvestment.json";
 
 interface IBlog {}
 
@@ -75,6 +73,16 @@ const blogs: Array<{
     subtitle:
       "Coro, a U.S.-Israeli cybersecurity platform for small and medium-sized businesses (SMEs), has raised $100 million in a private funding round at a company valuation of $750 million, it said on Thursday.",
   },
+  {
+    icon: <Blog5Svg />,
+    chipColor: "success",
+    chipLabel: "Funding",
+    url: "https://finance.yahoo.com/news/cybersecurity-platform-coro-raises-100-132041044.html",
+    title:
+      "Cybersecurity platform Coro raises $100 mln at valuation of $750 mln",
+    subtitle:
+      "Coro, a U.S.-Israeli cybersecurity platform for small and medium-sized businesses (SMEs), has raised $100 million in a private funding round at a company valuation of $750 million, it said on Thursday.",
+  },
 ];
 // const defaultOptions = {
 //   loop: true,
@@ -89,16 +97,9 @@ const BlogList: React.FC<IBlog> = () => {
   return (
     <Grid container spacing={2} height={"100%"} alignItems={"center"}>
       {blogs.map((blog, index) => (
-        <Grid item md={4} xs={6} key={index}>
+        <Grid item md={4} sm={6} xs={12} key={index}>
           <Card>
             {blog.icon}
-            {/* <Lottie
-              options={defaultOptions}
-              height={260}
-              width={300}
-              //   isStopped={this.state.isStopped}
-              //   isPaused={this.state.isPaused}
-            /> */}
             <Box
               display={"flex"}
               flexDirection={"column"}
@@ -109,12 +110,12 @@ const BlogList: React.FC<IBlog> = () => {
               <Chip color={blog.chipColor} label={blog.chipLabel!} />
 
               <Link rel="noopener noreferrer" href={blog.url} target="_blank">
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom fontStyle={"italic"}>
                   {blog.title}
                 </Typography>
               </Link>
 
-              <Typography variant="body1">{blog.subtitle}</Typography>
+              {/* <Typography variant="body1">{blog.subtitle}</Typography> */}
             </Box>
           </Card>
         </Grid>

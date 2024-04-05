@@ -122,53 +122,39 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
         <Box>
           <CurrencyList currencies={updatedMarketPrices} />
 
-          <Stack
-            direction={"row"}
-            gap={2}
-            justifyContent={"end"}
-            position={"sticky"}
-            sx={{ bottom: 0 }}
+          <Card
+            sx={{
+              bottom: 0,
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              position: "sticky",
+              gap: 3,
+              width: "fit-content",
+              ml: "auto",
+              p: 2,
+              alignItems: "center",
+            }}
           >
-            <Card
-              sx={{
-                width: "fit-content",
-                marginLeft: "auto",
-                position: "sticky",
-                bottom: 0,
-                padding: 2,
-              }}
-            >
-              <Typography variant="h5">
-                Invested: ${totalAmount?.toLocaleString?.()}
+            <Typography variant="h5">
+              Invested: ${totalAmount?.toLocaleString?.()}
+            </Typography>
+            <Stack direction={"row"} alignItems={"center"}>
+              <ProgressIcon netDiff={totalNewAmount - totalAmount!} />
+              <Typography
+                variant="body1"
+                color={getProgressColor(totalNewAmount - totalAmount!)}
+              >
+                {calculateChangePercent}%
               </Typography>
-            </Card>
-            <Card
-              sx={{
-                width: "fit-content",
-                position: "sticky",
-                bottom: 0,
-                padding: 2,
-              }}
+            </Stack>
+            <Typography
+              variant="h5"
+              color={getProgressColor(totalNewAmount - totalAmount!)}
             >
-              <Stack direction={"row"} gap={3} alignItems={"center"}>
-                <Stack direction={"row"} alignItems={"center"}>
-                  <ProgressIcon netDiff={totalNewAmount - totalAmount!} />
-                  <Typography
-                    variant="body1"
-                    color={getProgressColor(totalNewAmount - totalAmount!)}
-                  >
-                    {calculateChangePercent}%
-                  </Typography>
-                </Stack>
-                <Typography
-                  variant="h5"
-                  color={getProgressColor(totalNewAmount - totalAmount!)}
-                >
-                  ${totalNewAmount?.toLocaleString?.()}
-                </Typography>
-              </Stack>
-            </Card>
-          </Stack>
+              ${totalNewAmount?.toLocaleString?.()}
+            </Typography>
+          </Card>
         </Box>
       </DialogContent>
     </Dialog>

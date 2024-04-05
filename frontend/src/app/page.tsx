@@ -15,8 +15,8 @@ export default function Home() {
   useEffect(() => {
     setIsClientReadt(true);
   }, []);
-  if(typeof  window === 'undefined') return <></>
-  if(!isClientReady) return <></>
+  if (typeof window === "undefined") return <></>;
+  if (!isClientReady) return <></>;
   return (
     <Stack sx={{ p: 3 }} gap={2}>
       <Stack display={"row"} flexDirection={"column"} gap={2}>
@@ -39,10 +39,10 @@ export default function Home() {
         <PricesGrid />
 
         <Grid container mt={0} spacing={2}>
-          <Grid item md={8} xs={12}>
+          <Grid item lg={8} md={12} sm={12}>
             <BlogList />
           </Grid>
-          <Grid item md={4} xs={8}>
+          <Grid item lg={4} md={12} sm={12}>
             <FeedBackForm />
           </Grid>
         </Grid>
@@ -50,4 +50,3 @@ export default function Home() {
     </Stack>
   );
 }
-

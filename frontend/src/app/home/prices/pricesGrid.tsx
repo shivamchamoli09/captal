@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCurrencyStore } from "@/store/currencies.store";
 import { Tabs } from "@/components/base/Tabs";
 import { Card } from "@/components/base/Card";
+import { CurrencySchemaType } from "@/lib/domains";
 
 interface IPricesGrid {}
 
@@ -92,12 +93,17 @@ const columns: GridColDef[] = [
 
 const PricesGrid: React.FC<IPricesGrid> = () => {
   const { setCurrencies } = useCurrencyStore();
-  const { data: prices } = 
-  useQuery({
+  const { data: prices } = useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
       const curr = await getCurrencies();
-      setCurrencies([...curr?.stocks, ...curr?.crypto]);
+      const stockMap = new Map<string, CurrencySchemaType>();
+      for (const s of curr?.stocks) {
+        if (!s.shortName) continue;
+        if (stockMap.has(s.shortName)) continue;
+        stockMap.set(s.shortName, s);
+      }
+      setCurrencies([...stockMap?.values(), ...curr?.crypto]);
       return curr;
     },
     retry: 0,

@@ -1,5 +1,5 @@
 import { Card } from "@/components/base/Card";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography, Skeleton } from "@mui/material";
 import React, { useCallback, useMemo } from "react";
 import NorthEastIcon from "@mui/icons-material/NorthEast";
 import SouthWestIcon from "@mui/icons-material/SouthWest";
@@ -11,7 +11,7 @@ import { ProgressIcon, getProgressColor } from "./mips/mip.service";
 interface IBalance {}
 
 const Balance: React.FC<IBalance> = (props) => {
-  const { mipList, mipCurrentBalanceById } = useMipStore();
+  const { mipList, mipCurrentBalanceById, isLoading } = useMipStore();
 
   const investedAmount = useMemo(() => {
     let total = 0;
@@ -34,51 +34,59 @@ const Balance: React.FC<IBalance> = (props) => {
   const netDiff = Number((latestBal - investedAmount)?.toFixed(3));
 
   const changePercent = useMemo(() => {
-    if(!netDiff || !investedAmount) return 0
+    if (!netDiff || !investedAmount) return 0;
     return Math.abs((netDiff / investedAmount) * 100)?.toFixed(2);
   }, [netDiff, investedAmount]);
 
   return (
     <Card>
-      <Box display={"flex"} justifyContent={"space-between"}>
-        <Box>
-          <Typography variant="h4" gutterBottom fontWeight={"medium"}>
-            Balance
-          </Typography>
-          <Typography variant="h3">${latestBal?.toLocaleString?.()}</Typography>
-        </Box>
+      {isLoading ? (
+        <Skeleton variant="rectangular" width="100%" height={100} />
+      ) : (
+        <>
+          <Box display={"flex"} justifyContent={"space-between"}>
+            <Box>
+              <Typography variant="h4" gutterBottom fontWeight={"medium"}>
+                Balance
+              </Typography>
+              <Typography variant="h3">
+                ${latestBal?.toLocaleString?.()}
+              </Typography>
+            </Box>
 
-        <Stack direction={"row"} alignItems={"center"}>
-          <ProgressIcon netDiff={netDiff} />
-          <Typography
-            variant="caption"
-            color={getProgressColor(netDiff)}
-            display={"flex"}
-          >
-            {changePercent}%
-          </Typography>
-        </Stack>
-      </Box>
+            <Stack direction={"row"} alignItems={"center"}>
+              <ProgressIcon netDiff={netDiff} />
+              <Typography
+                variant="caption"
+                color={getProgressColor(netDiff)}
+                display={"flex"}
+              >
+                {changePercent}%
+              </Typography>
+            </Stack>
+          </Box>
 
-      <Grid container sx={{ justifyContent: "space-between", mt: 3 }}>
-        <Grid item xs={6}>
-          <Typography variant="h6">P&L</Typography>
-          <Typography
-            variant="h6"
-            color={getProgressColor(netDiff)}
-            fontWeight={"bold"}
-          >
-            ${netDiff?.toLocaleString?.()}
-          </Typography>
-        </Grid>
+          <Grid container sx={{ justifyContent: "space-between", mt: 3 }}>
+            <Grid item xs={6}>
+              <Typography variant="h6">P&L</Typography>
+              <Typography
+                variant="h6"
+                color={getProgressColor(netDiff)}
+                fontWeight={"bold"}
+              >
+                ${netDiff?.toLocaleString?.()}
+              </Typography>
+            </Grid>
 
-        <Grid item xs={6} textAlign={"end"}>
-          <Typography variant="h6">Invested</Typography>
-          <Typography variant="body1" color={"text"}>
-            ${investedAmount?.toLocaleString?.()}
-          </Typography>
-        </Grid>
-      </Grid>
+            <Grid item xs={6} textAlign={"end"}>
+              <Typography variant="h6">Invested</Typography>
+              <Typography variant="body1" color={"text"}>
+                ${investedAmount?.toLocaleString?.()}
+              </Typography>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Card>
   );
 };

@@ -8,16 +8,19 @@ type Store = {
   openCreateDialog: () => void;
   closeCreateDialog: () => void;
   mipList: Array<MipSchemaType>;
+  isLoading: boolean;
   addMip: (mip: MipSchemaType) => void;
   setMipList: (mips: Store["mipList"]) => void;
   mipCurrentBalanceById?: Map<string, number>;
   setMipCurrentBalance: (id: string, balance: number) => void;
+  setIsLoading: (val: boolean) => void;
 };
 
 export const useMipStore = create<Store>()((set) => ({
   createMip: false,
   mipList: [],
   mipCurrentBalanceById: new Map(),
+  isLoading: true,
   openCreateDialog: () => set(() => ({ createMip: true })),
   closeCreateDialog: () => set(() => ({ createMip: false })),
   addMip: (newMip: MipSchemaType) =>
@@ -32,4 +35,6 @@ export const useMipStore = create<Store>()((set) => ({
       state.mipCurrentBalanceById?.set(id, bal);
       return { ...state };
     }),
+  setIsLoading: (val: boolean) =>
+    set((state) => ({ ...state, isLoading: val })),
 }));

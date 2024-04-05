@@ -4,7 +4,13 @@ import React, { lazy, useMemo } from "react";
 // import { PieChart } from "@/components/chart/PieChart";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
-import { Box, CircularProgress, Stack, useTheme } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Skeleton,
+  Stack,
+  useTheme,
+} from "@mui/material";
 import { Tabs } from "@/components/base/Tabs";
 const PieChart = lazy(() => import("@/components/chart/PieChart"));
 
@@ -12,7 +18,7 @@ const PieChartWithTabs: React.FC = () => {
   const [value, setValue] = React.useState<"Balance" | "Profit" | "Invested">(
     "Balance"
   );
-  const { mipList, mipCurrentBalanceById } = useMipStore();
+  const { mipList, mipCurrentBalanceById, isLoading } = useMipStore();
   const { pieChartData, pieChartProfitData, pieChartBalanceData } = useMipChart(
     { mips: mipList, currentPrices: mipCurrentBalanceById }
   );
@@ -23,18 +29,57 @@ const PieChartWithTabs: React.FC = () => {
     if (value === "Profit") return pieChartProfitData;
     return pieChartData;
   }, [pieChartData, pieChartProfitData, pieChartBalanceData, value]);
+
+  if (isLoading) {
+    return (
+      <Box
+        p={2}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <Stack direction={"row"} gap={2}>
+          <Skeleton
+            variant="rectangular"
+            width={80}
+            height={20}
+            sx={{ borderRadius: "6px" }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width={80}
+            height={20}
+            sx={{ borderRadius: "6px" }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width={80}
+            height={20}
+            sx={{ borderRadius: "6px" }}
+          />
+        </Stack>
+        <Skeleton variant="circular" width={240} height={240} sx={{ mt: 4 }} />
+      </Box>
+    );
+  }
   return (
-    <Box>
-      {/* <Stack> */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        // overflowX: "auto",
+      }}
+    >
       <Tabs
         tabs={["Balance", "Profit", "Invested"]}
         value={value}
         onChange={(val) => setValue(val as typeof value)}
       />
-      {/* </Stack> */}
 
       <PieChart
-        width={400}
+        width={370}
         height={320}
         data={chartData}
         options={{

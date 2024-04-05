@@ -22,6 +22,8 @@ const containerStyles = {
     "radial-gradient(164.42% 139.2% at 0% 3.17%, rgba(0, 150, 255, 0.32) 0%, rgba(255, 222, 106, 0.26) 100%)",
   borderRadius: "50px",
   p: 4,
+  maxWidth: "620px",
+  m: "auto",
 };
 
 const FeedBackForm: React.FC = () => {
@@ -129,9 +131,9 @@ const FeedBackForm: React.FC = () => {
             </Box>
             {feedbackSubmit && (
               <Typography variant="body1" color={"success.main"}>
-                Thank you for your valuable feedback. We
-                assure you that we are committed to implementing your
-                suggestions promptly to enhance our services.
+                Thank you for your valuable feedback. We assure you that we are
+                committed to implementing your suggestions promptly to enhance
+                our services.
               </Typography>
             )}
             <Button
@@ -139,7 +141,11 @@ const FeedBackForm: React.FC = () => {
               sx={{ ml: "auto", width: "120px" }}
               onClick={form.handleSubmit(handleSubmitFeedback)}
             >
-              {isLoading ? <CircularProgress size={24} color="success"/> : "Submit"}
+              {isLoading ? (
+                <CircularProgress size={24} color="success" />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </Stack>
         </FormProvider>

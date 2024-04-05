@@ -11,10 +11,9 @@ import {
   Fade,
   Stack,
   useTheme,
+  Skeleton,
 } from "@mui/material";
-// import BarChart from "@/components/chart/BarChart";
 import { Tabs } from "@/components/base/Tabs";
-// import { DumbellChart } from "@/components/chart/DumbellChart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 const BarChart = lazy(() => import("@/components/chart/BarChart"));
@@ -22,7 +21,7 @@ const DumbellChart = lazy(() => import("@/components/chart/DumbellChart"));
 
 const BarChartLayout: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<"bar" | "dumbell">("bar");
-  const { mipList, mipCurrentBalanceById } = useMipStore();
+  const { mipList, mipCurrentBalanceById, isLoading } = useMipStore();
   const theme = useTheme();
   const { barChartData, dumbellChartData } = useMipChart({
     mips: mipList,
@@ -34,6 +33,39 @@ const BarChartLayout: React.FC = () => {
     fontSize: 14,
     color: theme.palette.text.primary,
   };
+
+  if (isLoading) {
+    return (
+      <Box
+        p={2}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+        alignItems={"end"}
+      >
+        <Stack direction={"row"} gap={2}>
+          <Skeleton
+            variant="rectangular"
+            width={40}
+            height={20}
+            sx={{ borderRadius: "6px" }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width={40}
+            height={20}
+            sx={{ borderRadius: "6px" }}
+          />
+        </Stack>
+        <Skeleton
+          variant="rectangular"
+          width={"80%"}
+          height={240}
+          sx={{ mt: 4, borderRadius: "6px" }}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -60,7 +92,14 @@ const BarChartLayout: React.FC = () => {
             data={barChartData}
             chartType="ComboChart"
             //   diffdata={barChartDiffData}
-            loader={<CircularProgress />}
+            loader={
+              <Skeleton
+                variant="rectangular"
+                width={"80%"}
+                height={220}
+                sx={{ mt: 4, borderRadius: "6px" }}
+              />
+            }
             options={{
               title: "Mip Investment Comparision",
               titleTextStyle: {

@@ -2,8 +2,8 @@ export const Blog5Svg = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="392"
-      height="222"
+      width="342"
+      height="200"
       viewBox="50 -100 900 500"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
