@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import React, { useEffect, useState } from "react";
+import { Stack, TextField } from "@mui/material";
+import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import { CurrencyTypes } from "@/core/types/currency.type";
 import { getCurrencies } from "@/lib/external/currencyPrices";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ import { useCurrencyStore } from "@/store/currencies.store";
 import { Tabs } from "@/components/base/Tabs";
 import { Card } from "@/components/base/Card";
 import { CurrencySchemaType } from "@/lib/domains";
+import { debounce } from "@mui/material/utils";
 
 interface IPricesGrid {}
 
@@ -93,6 +94,9 @@ const columns: GridColDef[] = [
 
 const PricesGrid: React.FC<IPricesGrid> = () => {
   const { setCurrencies } = useCurrencyStore();
+  const apiRef = useGridApiRef();
+  const [searchValue, setSearchValue] = useState<string>("");
+
   const { data: prices } = useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
@@ -128,18 +132,45 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
     CurrencyTypes.CRYPTO
   );
 
+  const updateSearchValue = React.useMemo(() => {
+    return debounce((newValue) => {
+      apiRef.current.setQuickFilterValues(
+        newValue.split(" ").filter((word: string) => word !== "")
+      );
+    }, 300);
+  }, [apiRef]);
+
+  function handleSearchValueChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = event.target.value;
+    setSearchValue(newValue);
+    updateSearchValue(newValue);
+  }
+
   if (!prices) return <>Loading...</>;
 
   return (
     <Card sx={{ height: 400, width: "100%" }}>
-      <Box sx={{ width: "100%", typography: "body1" }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        sx={{ width: "100%" }}
+      >
         <Tabs
           tabs={Object.keys(CurrencyTypes)}
           value={value}
           onChange={(val) => setValue(val as typeof value)}
         />
-      </Box>
+
+        <TextField
+          variant="standard"
+          value={searchValue}
+          onChange={handleSearchValueChange}
+          label="Search"
+          sx={{ mb: 1 }}
+        />
+      </Stack>
       <DataGrid
+        apiRef={apiRef}
         getRowId={(row) => row.symbol}
         rows={value === CurrencyTypes.CRYPTO ? prices?.crypto : prices?.stocks}
         columns={columns}

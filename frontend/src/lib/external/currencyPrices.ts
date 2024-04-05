@@ -25,6 +25,21 @@ export const getStockPrices = async (): Promise<
     return [];
   }
 };
+export const getNSEStockPrices = async (): Promise<
+  z.infer<typeof GetStockPricesSchema>
+> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nse`,
+      { cache: "no-store" }
+    );
+    const data = await res.json();
+    return parseSchema(GetStockPricesSchema, data);
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};
 
 export const getCryptoPrices = async (): Promise<
   z.infer<typeof GetCryptoPricesSchema>
@@ -48,7 +63,12 @@ export const getCurrencies = async (): Promise<{
 }> => {
   const stocksPromise = getStockPrices();
   const cryptoPromise = getCryptoPrices();
-  const result = await Promise.all([stocksPromise, cryptoPromise]);
+  // const nsePricesPromise = getNSEStockPrices();
+  const result = await Promise.all([
+    stocksPromise,
+    cryptoPromise,
+    // nsePricesPromise,
+  ]);
   return {
     stocks: result[0],
     crypto: result[1],

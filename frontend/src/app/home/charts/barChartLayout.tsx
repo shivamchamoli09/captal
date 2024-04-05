@@ -34,38 +34,38 @@ const BarChartLayout: React.FC = () => {
     color: theme.palette.text.primary,
   };
 
-  if (isLoading) {
-    return (
-      <Box
-        p={2}
-        display={"flex"}
-        flexDirection={"column"}
-        justifyContent={"space-between"}
-        alignItems={"end"}
-      >
-        <Stack direction={"row"} gap={2}>
-          <Skeleton
-            variant="rectangular"
-            width={40}
-            height={20}
-            sx={{ borderRadius: "6px" }}
-          />
-          <Skeleton
-            variant="rectangular"
-            width={40}
-            height={20}
-            sx={{ borderRadius: "6px" }}
-          />
-        </Stack>
-        <Skeleton
-          variant="rectangular"
-          width={"80%"}
-          height={240}
-          sx={{ mt: 4, borderRadius: "6px" }}
-        />
-      </Box>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Box
+  //       p={2}
+  //       display={"flex"}
+  //       flexDirection={"column"}
+  //       justifyContent={"space-between"}
+  //       alignItems={"end"}
+  //     >
+  //       <Stack direction={"row"} gap={2}>
+  //         <Skeleton
+  //           variant="rectangular"
+  //           width={40}
+  //           height={20}
+  //           sx={{ borderRadius: "6px" }}
+  //         />
+  //         <Skeleton
+  //           variant="rectangular"
+  //           width={40}
+  //           height={20}
+  //           sx={{ borderRadius: "6px" }}
+  //         />
+  //       </Stack>
+  //       <Skeleton
+  //         variant="rectangular"
+  //         width={"80%"}
+  //         height={240}
+  //         sx={{ mt: 4, borderRadius: "6px" }}
+  //       />
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box>
