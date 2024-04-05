@@ -5,7 +5,7 @@ import { Avatar } from "@/core/theme/base/Avatar";
 import { CurrencyListSchemaType } from "@/lib/domains";
 import { CryptoSchemaType } from "@/lib/domains/cryptoSchema";
 import { getDailyGainers } from "@/lib/external/currencyPrices";
-import { Box, List, Stack, SxProps, Typography } from "@mui/material";
+import { Box, List, Skeleton, Stack, SxProps, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
@@ -20,12 +20,49 @@ const boxStyles: SxProps = {
 };
 
 const Transactions: React.FC<ITransactions> = () => {
-  const { data: transactions } = useQuery<CurrencyListSchemaType>({
+  const { data: transactions, isLoading } = useQuery<CurrencyListSchemaType>({
     queryKey: ["dailyGainers"],
     queryFn: async () => getDailyGainers(),
     retry: 0,
     refetchOnWindowFocus: false,
   });
+
+  if (isLoading) {
+    return (
+      <Card sx={{ p: 2 }}>
+        <Skeleton
+          variant="rectangular"
+          width={120}
+          height={20}
+          sx={{ ml: "auto", mr: "auto" }}
+        />
+        {[1, 2, 3, 4, 5].map((_, i) => (
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            mt={3}
+            alignItems={"center"}
+            key={i}
+          >
+            <Stack direction={"row"} gap={1} alignItems={"center"}>
+              <Skeleton variant="circular" width={36} height={36} />
+              <Skeleton variant="rectangular" width={80} height={20} />
+            </Stack>
+            <Stack>
+              <Skeleton variant="rectangular" width={80} height={15} />
+              <Skeleton
+                variant="rectangular"
+                width={40}
+                height={15}
+                sx={{ mt: 1, ml: "auto" }}
+              />
+            </Stack>
+          </Stack>
+        ))}
+      </Card>
+    );
+  }
+
   if (!transactions?.length)
     return (
       <Box sx={boxStyles}>

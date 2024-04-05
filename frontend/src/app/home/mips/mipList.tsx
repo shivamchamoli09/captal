@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { MipDetails } from "./mipDetails";
 import { MipSchema, MipSchemaType } from "@/lib/domains/mipSchema";
@@ -12,6 +12,7 @@ import { CurrencyListDialog } from "./currenyListing/currencyDialog";
 import { useMipStore } from "@/store";
 import { useCurrencyStore } from "@/store/currencies.store";
 import { CurrencySchemaType } from "@/lib/domains";
+import { Card } from "@/components/base/Card";
 
 interface IMipList {}
 
@@ -40,7 +41,7 @@ const MipList: React.FC<IMipList> = () => {
       return map;
     }, [currentPrices]);
 
-  const { mipList: mips, setMipList } = useMipStore();
+  const { mipList: mips, setMipList, deleteMipCurrentBalance } = useMipStore();
   useEffect(() => {
     setMipList(
       (getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
@@ -56,12 +57,33 @@ const MipList: React.FC<IMipList> = () => {
       let currentMips = Array.from(mips!);
       currentMips.splice(mipToDeleteIdx, 1);
       setMipList(currentMips);
+      deleteMipCurrentBalance(currentMip?.id!);
       closeConfirmationDelete();
     } catch (error) {
       console.log(error);
     }
   };
-  if (!mips) return <></>;
+  if (!mips?.length)
+    return (
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          p: 4,
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Embark on a journey of financial empowerment and growth with our
+          innovative MIP (Mixed Investment Plan) solutions, designed to help you
+          realize your long-term goals through disciplined and strategic
+          investment, one mip at a time. Click on the add icon above to create
+          your first mip.
+        </Typography>
+      </Card>
+    );
   return (
     <>
       <Grid container spacing={2} height={"100%"} alignItems={"start"}>

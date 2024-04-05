@@ -32,7 +32,6 @@ const Balance: React.FC<IBalance> = (props) => {
   }, [mipCurrentBalanceById?.size]);
 
   const netDiff = Number((latestBal - investedAmount)?.toFixed(3));
-
   const changePercent = useMemo(() => {
     if (!netDiff || !investedAmount) return 0;
     return Math.abs((netDiff / investedAmount) * 100)?.toFixed(2);

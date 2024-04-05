@@ -13,6 +13,7 @@ type Store = {
   setMipList: (mips: Store["mipList"]) => void;
   mipCurrentBalanceById?: Map<string, number>;
   setMipCurrentBalance: (id: string, balance: number) => void;
+  deleteMipCurrentBalance: (id: string) => void;
   setIsLoading: (val: boolean) => void;
 };
 
@@ -34,6 +35,11 @@ export const useMipStore = create<Store>()((set) => ({
     set((state) => {
       state.mipCurrentBalanceById?.set(id, bal);
       return { ...state };
+    }),
+  deleteMipCurrentBalance: (id: string) =>
+    set((state) => {
+      state.mipCurrentBalanceById?.delete(id);
+      return state;
     }),
   setIsLoading: (val: boolean) =>
     set((state) => ({ ...state, isLoading: val })),

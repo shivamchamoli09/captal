@@ -1,22 +1,15 @@
 "use client";
 
 import { MyInvestments } from "./home/myInvestments";
-import { Box, Grid, Stack, SxProps, Typography } from "@mui/material";
+import { Box, Grid, Stack} from "@mui/material";
 import { PricesGrid } from "./home/prices/pricesGrid";
 import { Transactions } from "./home/transactions";
 import { MipList } from "./home/mips/mipList";
 import { BlogList } from "./home/blogs/blogList";
 import { FeedBackForm } from "./home/feedback";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [isClientReady, setIsClientReadt] = useState<boolean>(false);
 
-  useEffect(() => {
-    setIsClientReadt(true);
-  }, []);
-  if (typeof window === "undefined") return <></>;
-  if (!isClientReady) return <></>;
   return (
     <Stack sx={{ p: 3 }} gap={2}>
       <Stack display={"row"} flexDirection={"column"} gap={2}>

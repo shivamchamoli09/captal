@@ -147,5 +147,12 @@ export const darkTheme: ThemeOptions = {
         },
       },
     },
+    // MuiSkeleton: {
+    //   styleOverrides: {
+    //     root: {
+    //       ".MuiSkeleton-rectangular": { borderRadius: "6px" },
+    //     },
+    //   },
+    // },
   },
 };

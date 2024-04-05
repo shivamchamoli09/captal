@@ -1,4 +1,4 @@
-"use"
+"use";
 import { Box, Card, Chip, Grid, Link, Typography } from "@mui/material";
 import React from "react";
 import Image from "next/image";
@@ -12,6 +12,7 @@ interface IBlog {}
 
 const blogs: Array<{
   icon: JSX.Element;
+  iconUrl: string;
   chipColor:
     | "default"
     | "primary"
@@ -27,6 +28,7 @@ const blogs: Array<{
 }> = [
   {
     icon: <Blog1Svg />,
+    iconUrl: "/blogs/b3.jpg",
     chipColor: "success",
     chipLabel: "News",
     url: "https://finance.yahoo.com/news/global-markets-stocks-head-quarter-131844922.html",
@@ -36,6 +38,7 @@ const blogs: Array<{
   },
   {
     icon: <Blog3Svg />,
+    iconUrl: "/blogs/b7.jpg",
     chipColor: "error",
     chipLabel: "Crypto",
     url: "https://finance.yahoo.com/news/us-uk-probe-20-billion-130343584.html",
@@ -46,6 +49,7 @@ const blogs: Array<{
   },
   {
     icon: <Blog2Svg />,
+    iconUrl: "/blogs/b4.jpg",
     chipColor: "warning",
     chipLabel: "Crypto",
     url: "https://finance.yahoo.com/news/1-us-cryptocurrency-etf-inflows-131223967.html",
@@ -55,16 +59,18 @@ const blogs: Array<{
   },
   {
     icon: <Blog4Svg />,
+    iconUrl: "/blogs/b1.jpg",
     chipColor: "info",
     chipLabel: "News",
     url: "https://www.indiratrade.com/blog/top-5-stock-market-bubbles-%7C-history-of-biggest-5-stock-market-crash/8313",
     title:
-      "Top 5 Stock Market Bubbles | History of Biggest 5 stock market crash",
+      "Top 5 Stock Market Bubbles | History of Biggest 5 stock market...",
     subtitle:
       "A market bubble is a period of excessive enthusiasm and inflated asset prices driven by speculative buying, detached from the true underlying value. This speculative fervor often leads to...",
   },
   {
     icon: <Blog5Svg />,
+    iconUrl: "/blogs/b5.jpg",
     chipColor: "success",
     chipLabel: "Funding",
     url: "https://finance.yahoo.com/news/cybersecurity-platform-coro-raises-100-132041044.html",
@@ -75,13 +81,13 @@ const blogs: Array<{
   },
   {
     icon: <Blog5Svg />,
+    iconUrl: "/blogs/b6.jpg",
     chipColor: "success",
     chipLabel: "Funding",
-    url: "https://finance.yahoo.com/news/cybersecurity-platform-coro-raises-100-132041044.html",
+    url: "https://finance.yahoo.com/news/us-economy-adds-303000-jobs-unemployment-falls-to-38-in-march-as-labor-market-continues-to-impress-123226886.html",
     title:
-      "Cybersecurity platform Coro raises $100 mln at valuation of $750 mln",
-    subtitle:
-      "Coro, a U.S.-Israeli cybersecurity platform for small and medium-sized businesses (SMEs), has raised $100 million in a private funding round at a company valuation of $750 million, it said on Thursday.",
+      "US economy adds 303,000 jobs, unemployment falls to 3.8% in March as labor market continues...",
+    subtitle: "",
   },
 ];
 // const defaultOptions = {
@@ -99,7 +105,10 @@ const BlogList: React.FC<IBlog> = () => {
       {blogs.map((blog, index) => (
         <Grid item md={4} sm={6} xs={12} key={index}>
           <Card>
-            {blog.icon}
+            {/* {blog.icon} */}
+            <Box sx={{ width: "100%", height: "205px", position: "relative" }}>
+              <Image src={blog.iconUrl} alt="Blog Image" sizes="100vw" fill />
+            </Box>
             <Box
               display={"flex"}
               flexDirection={"column"}

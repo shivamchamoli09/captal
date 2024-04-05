@@ -5,6 +5,7 @@ import {
   Stack,
   IconButton,
   Tooltip,
+  Skeleton,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
@@ -28,10 +29,13 @@ interface IMipDetails extends MipSchemaType {
 const MipDetails: React.FC<IMipDetails> = (props) => {
   const [currentTotalPrice, setCurrentTotalPrice] = useState<number>(0);
   const queryClient = useQueryClient();
-  const { setMipCurrentBalance, setIsLoading } = useMipStore();
+  const { setMipCurrentBalance, setIsLoading, isLoading } = useMipStore();
 
   useEffect(() => {
-    if (!props.currencies?.length) return;
+    if (!props.currencies?.length) {
+      setIsLoading(false);
+      return;
+    }
     async function fetchQuotes() {
       try {
         setIsLoading(true);
@@ -53,7 +57,13 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       }
     }
     fetchQuotes();
-  }, [props.currencies, props.id, queryClient, setIsLoading, setMipCurrentBalance]);
+  }, [
+    props.currencies,
+    props.id,
+    queryClient,
+    setIsLoading,
+    setMipCurrentBalance,
+  ]);
 
   const totalMipAmount: number = props.currencies?.reduce(
     (p, c) => p + c.regularMarketPrice,
@@ -75,6 +85,46 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
   };
 
   if (!props.currencies?.length) return <></>;
+
+  if (isLoading) {
+    return (
+      <Card
+        sx={{
+          p: 2,
+          gap: 2,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Stack direction={"row"} gap={2}>
+          <Skeleton variant="circular" width={36} height={36} />
+          <Stack>
+            <Skeleton variant="rectangular" width={40} height={15} />
+            <Skeleton
+              variant="rectangular"
+              width={80}
+              height={15}
+              sx={{ mt: 1 }}
+            />
+          </Stack>
+        </Stack>
+
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <Skeleton variant="rectangular" width={80} height={15} />
+          <Skeleton variant="rectangular" width={80} height={15} />
+        </Stack>
+        <Skeleton variant="rectangular" width={80} height={15} />
+
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <Skeleton variant="rectangular" width={80} height={15} />
+          <Stack direction={"row"} gap={1}>
+            <Skeleton variant="rectangular" width={30} height={15} />
+            <Skeleton variant="rectangular" width={30} height={15} />
+          </Stack>
+        </Stack>
+      </Card>
+    );
+  }
 
   return (
     <Card

@@ -9,7 +9,6 @@ interface IAddMipForm {
 
 const AddMipForm: React.FC<IAddMipForm> = ({ currencyOptions }) => {
   const { register, setValue } = useFormContext();
-  console.log(currencyOptions)
   return (
     <Stack direction={"row"} flexDirection={"column"} gap={3}>
       <TextField label="Name" {...register("name")} />

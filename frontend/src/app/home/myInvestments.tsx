@@ -14,7 +14,7 @@ import { AddOutlined } from "@mui/icons-material";
 interface ITopCurrencies {}
 
 const MyInvestments: React.FC<ITopCurrencies> = () => {
-  const { mipList } = useMipStore();
+  const { mipList, isLoading } = useMipStore();
 
   return (
     <Grid container spacing={2}>
@@ -34,7 +34,7 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
 
       <Grid item xs={12} md={9}>
         <Card sx={{ height: "100%" }}>
-          {mipList?.length ? (
+          {mipList?.length || isLoading ? (
             <Grid container spacing={2} justifyContent={"space-between"}>
               <Grid item md={4} xs={12}>
                 <PieChartWithTabs />
@@ -59,8 +59,8 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
                 Embark on a journey of financial empowerment and growth with our
                 innovative MIP (Mixed Investment Plan) solutions, designed to
                 help you realize your long-term goals through disciplined and
-                strategic investment, one mip at a time. Click on the add icon above
-                to create your first mip.
+                strategic investment, one mip at a time. Click on the add icon
+                above to create your first mip.
               </Typography>
             </Box>
           )}

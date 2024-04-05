@@ -1,5 +1,5 @@
 "use client";
-import { Stack, Card, Box, Typography } from "@mui/material";
+import { Stack, Card, Box, Typography, Skeleton } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,17 @@ import { CurrencySchemaType } from "@/lib/domains";
 import { getQuotes } from "@/lib/external/currencyPrices";
 import { ProgressIcon, getProgressColor } from "./mips/mip.service";
 import { Avatar } from "@/core/theme/base/Avatar";
+
+const cardStyles = {
+  p: 2,
+  gap: 2,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "170px",
+  height: "175px",
+};
 
 interface ITopBadPerformer {}
 
@@ -42,32 +53,48 @@ function getRandomValues(arr: Array<string>) {
 }
 
 const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
-  const { data: quotes } = useQuery<Array<CurrencySchemaType>>({
+  let { data: quotes, isLoading } = useQuery<Array<CurrencySchemaType>>({
     queryKey: [""],
     queryFn: () =>
       getQuotes({ symbols: getRandomValues(top10Symbols)?.join(",") }),
     refetchOnWindowFocus: false,
   });
+
+  if (isLoading) {
+    return (
+      <Stack direction={"row"} justifyContent={"space-between"}>
+        <Card sx={cardStyles}>
+          <Skeleton variant="circular" width={36} height={36} />
+          <Skeleton variant="rectangular" width={80} height={20} />
+          <Skeleton
+            variant="rectangular"
+            width={80}
+            height={15}
+            sx={{ mt: 1 }}
+          />
+          <Skeleton variant="rectangular" width={20} height={15} />
+        </Card>
+        <Card sx={cardStyles}>
+          <Skeleton variant="circular" width={36} height={36} />
+          <Skeleton variant="rectangular" width={80} height={20} />
+          <Skeleton
+            variant="rectangular"
+            width={80}
+            height={15}
+            sx={{ mt: 1 }}
+          />
+          <Skeleton variant="rectangular" width={20} height={15} />
+        </Card>
+      </Stack>
+    );
+  }
   return (
     <Stack direction={"row"} justifyContent={"space-between"}>
-      {quotes?.map((quote) => (
-        <Card
-          key={quote.symbol}
-          sx={{
-            p: 2,
-            gap: 2,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "170px",
-            height: "175px",
-          }}
-        >
+      {quotes?.map((quote, i) => (
+        <Card key={quote.symbol} sx={cardStyles}>
           <Avatar sx={{ width: "40px", height: "40px" }}>
             {quote.symbol?.[0]}
           </Avatar>
-          {/* <Image src={"/bitcoin.png"} width={40} height={40} alt="BTC" /> */}
           <Box width="100%">
             <Typography
               variant="h6"
