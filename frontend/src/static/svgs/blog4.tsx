@@ -26,7 +26,7 @@ export const Blog4Svg = () => {
         fill="none"
         stroke="#3f3d56"
         stroke-miterlimit="10"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M623.24692,469.05234"
@@ -34,7 +34,7 @@ export const Blog4Svg = () => {
         fill="none"
         stroke="#3f3d56"
         stroke-miterlimit="10"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <rect x="691.49413" y="48.99986" width="2" height="101" fill="#3f3d56" />
       <rect

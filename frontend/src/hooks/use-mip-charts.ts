@@ -61,12 +61,12 @@ export const useMipChart = ({ mips, currentPrices }: IMipChart) => {
           )?.toFixed(3)
         ),
       });
-      barChart.push([mip.name, total, currMipBal ?? 0]);
-      bardChartDiff?.old.push([mip.name, total]);
+      barChart.push([mip.name, Number(total?.toFixed(3)), currMipBal ?? 0]);
+      bardChartDiff?.old.push([mip.name, Number(total?.toFixed(3))]);
       bardChartDiff?.new.push([mip.name, currMipBal ?? 0]);
       dumbellData.push({
         x: mip.name,
-        y: [total, Number(currMipBal?.toFixed(2))],
+        y: [Number(total?.toFixed(3)), Number(currMipBal?.toFixed(3))],
       });
     }
     setPieChartData(pieData);

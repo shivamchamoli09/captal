@@ -13,7 +13,6 @@ import {
   useTheme,
   Skeleton,
 } from "@mui/material";
-import { Tabs } from "@/components/base/Tabs";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 const BarChart = lazy(() => import("@/components/chart/BarChart"));
@@ -21,7 +20,7 @@ const DumbellChart = lazy(() => import("@/components/chart/DumbellChart"));
 
 const BarChartLayout: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<"bar" | "dumbell">("bar");
-  const { mipList, mipCurrentBalanceById, isLoading } = useMipStore();
+  const { mipList, mipCurrentBalanceById } = useMipStore();
   const theme = useTheme();
   const { barChartData, dumbellChartData } = useMipChart({
     mips: mipList,
@@ -66,7 +65,6 @@ const BarChartLayout: React.FC = () => {
   //     </Box>
   //   );
   // }
-
   return (
     <Box>
       <ButtonGroup color="success" sx={{ width: "100%" }}>
@@ -87,48 +85,52 @@ const BarChartLayout: React.FC = () => {
         </Button>
       </ButtonGroup>
       <Fade in={selectedTab === "bar"} timeout={700}>
-        <div style={{ display: selectedTab === "bar" ? "block" : "none" }}>
-          <BarChart
-            data={barChartData}
-            chartType="ComboChart"
-            //   diffdata={barChartDiffData}
-            loader={
-              <Skeleton
-                variant="rectangular"
-                width={"80%"}
-                height={220}
-                sx={{ mt: 4, borderRadius: "6px" }}
-              />
-            }
-            options={{
-              title: "Mip Investment Comparision",
-              titleTextStyle: {
-                color: theme.palette.text.primary,
-                fontSize: 14,
-              },
-              vAxis: {
-                title: "ROI",
-                minValue: 0,
-                titleTextStyle: titleTextStyles,
-                textStyle: { color: theme.palette.text.primary },
-              },
-              hAxis: {
-                title: "Mips",
-                titleTextStyle: titleTextStyles,
-                textStyle: { color: theme.palette.text.primary },
-              },
-              seriesType: "bars",
-              series: { 5: { type: "line" } },
-              backgroundColor: "none",
-              colors: ["#008ffb", "#00e396"],
-              legend: {
-                textStyle: {
-                  fontSize: 11,
+        {/* <div style={{ display: selectedTab === "bar" ? "block" : "none" }}>
+          
+        </div> */}
+        <div>
+          {selectedTab === "bar" && (
+            <BarChart
+              data={barChartData}
+              chartType="ComboChart"
+              // loader={
+              //   <Skeleton
+              //     variant="rectangular"
+              //     width={"80%"}
+              //     height={220}
+              //     sx={{ mt: 4, borderRadius: "6px" }}
+              //   />
+              // }
+              options={{
+                title: "Mip Investment Comparision",
+                titleTextStyle: {
                   color: theme.palette.text.primary,
+                  fontSize: 14,
                 },
-              },
-            }}
-          />
+                vAxis: {
+                  title: "ROI",
+                  minValue: 0,
+                  titleTextStyle: titleTextStyles,
+                  textStyle: { color: theme.palette.text.primary },
+                },
+                hAxis: {
+                  title: "Mips",
+                  titleTextStyle: titleTextStyles,
+                  textStyle: { color: theme.palette.text.primary },
+                },
+                seriesType: "bars",
+                series: { 5: { type: "line" } },
+                backgroundColor: "none",
+                colors: ["#008ffb", "#00e396"],
+                legend: {
+                  textStyle: {
+                    fontSize: 11,
+                    color: theme.palette.text.primary,
+                  },
+                },
+              }}
+            />
+          )}
         </div>
       </Fade>
 

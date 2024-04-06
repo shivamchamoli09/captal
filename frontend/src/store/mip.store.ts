@@ -21,7 +21,7 @@ export const useMipStore = create<Store>()((set) => ({
   createMip: false,
   mipList: [],
   mipCurrentBalanceById: new Map(),
-  isLoading: false,
+  isLoading: true,
   openCreateDialog: () => set(() => ({ createMip: true })),
   closeCreateDialog: () => set(() => ({ createMip: false })),
   addMip: (newMip: MipSchemaType) =>

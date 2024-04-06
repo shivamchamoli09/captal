@@ -33,6 +33,7 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
 
   useEffect(() => {
     if (!props.currencies?.length) {
+      setIsLoading(false);
       return;
     }
     async function fetchQuotes() {

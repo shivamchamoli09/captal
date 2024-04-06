@@ -41,13 +41,21 @@ const MipList: React.FC<IMipList> = () => {
       return map;
     }, [currentPrices]);
 
-  const { mipList: mips, setMipList, deleteMipCurrentBalance } = useMipStore();
+  const {
+    mipList: mips,
+    setMipList,
+    deleteMipCurrentBalance,
+    setIsLoading,
+  } = useMipStore();
   useEffect(() => {
     setMipList(
       (getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
         schema: z.array(MipSchema),
       }) as any) ?? []
     );
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, [setMipList]);
 
   const handleDeleteMip = () => {
