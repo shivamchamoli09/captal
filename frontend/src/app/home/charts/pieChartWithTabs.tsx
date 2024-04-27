@@ -1,12 +1,10 @@
 "use client";
 
 import React, { lazy, useMemo } from "react";
-// import { PieChart } from "@/components/chart/PieChart";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
 import {
   Box,
-  CircularProgress,
   Skeleton,
   Stack,
   useTheme,

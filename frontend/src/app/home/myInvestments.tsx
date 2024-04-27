@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { BarChartData, LineChartData } from "./lib/data";
 import { Box, Grid, Stack, Theme, Typography, useTheme } from "@mui/material";
 import { Card } from "@/components/base/Card";
 import { Balance } from "./balance";
@@ -9,7 +8,6 @@ import { TopBadPerformer } from "./performers";
 import { PieChartWithTabs } from "./charts/pieChartWithTabs";
 import { BarChartLayout } from "./charts/barChartLayout";
 import { useMipStore } from "@/store";
-import { AddOutlined } from "@mui/icons-material";
 
 interface ITopCurrencies {}
 

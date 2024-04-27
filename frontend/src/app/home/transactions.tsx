@@ -73,7 +73,7 @@ const Transactions: React.FC<ITransactions> = () => {
       </Box>
     );
   return (
-    <Card sx={{ p: 2 }}>
+    <Card sx={{ p: 2, overflowX: "auto" }}>
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography
           variant="h2"

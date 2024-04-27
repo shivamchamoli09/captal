@@ -3,16 +3,7 @@
 import React, { lazy, useState } from "react";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  CircularProgress,
-  Fade,
-  Stack,
-  useTheme,
-  Skeleton,
-} from "@mui/material";
+import { Box, Button, ButtonGroup, Fade, useTheme } from "@mui/material";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 const BarChart = lazy(() => import("@/components/chart/BarChart"));
@@ -93,14 +84,7 @@ const BarChartLayout: React.FC = () => {
             <BarChart
               data={barChartData}
               chartType="ComboChart"
-              // loader={
-              //   <Skeleton
-              //     variant="rectangular"
-              //     width={"80%"}
-              //     height={220}
-              //     sx={{ mt: 4, borderRadius: "6px" }}
-              //   />
-              // }
+              // loader={"Loading..."}
               options={{
                 title: "Mip Investment Comparision",
                 titleTextStyle: {
@@ -136,56 +120,58 @@ const BarChartLayout: React.FC = () => {
 
       <Fade in={selectedTab === "dumbell"} timeout={700}>
         <div style={{ display: selectedTab === "dumbell" ? "block" : "none" }}>
-          <DumbellChart
-            series={[{ data: dumbellChartData }]}
-            animations={{ enabled: true, easing: "easeinout" }}
-            options={{
-              chart: {
-                background: "inherit",
-                toolbar: { show: false },
-                height: 350,
-                type: "rangeBar",
-                zoom: {
-                  enabled: false,
+          {selectedTab === "dumbell" && (
+            <DumbellChart
+              series={[{ data: dumbellChartData }]}
+              animations={{ enabled: true, easing: "easeinout" }}
+              options={{
+                chart: {
+                  background: "inherit",
+                  toolbar: { show: false },
+                  height: 350,
+                  type: "rangeBar",
+                  zoom: {
+                    enabled: false,
+                  },
                 },
-              },
-              plotOptions: {
-                bar: {
-                  isDumbbell: true,
-                  columnWidth: 5,
-                  dumbbellColors: [["#008FFB", "#00E396"]],
+                plotOptions: {
+                  bar: {
+                    isDumbbell: true,
+                    columnWidth: 5,
+                    dumbbellColors: [["#008FFB", "#00E396"]],
+                  },
                 },
-              },
-              legend: {
-                show: false,
-              },
-              fill: {
-                type: "gradient",
-                gradient: {
-                  type: "vertical",
-                  gradientToColors: ["#FFF"],
-                  // inverseColors: true,
-                  // stops: [0, 100],
+                legend: {
+                  show: false,
                 },
-              },
-              theme: { mode: "dark" },
-              grid: {
+                fill: {
+                  type: "gradient",
+                  gradient: {
+                    type: "vertical",
+                    gradientToColors: ["#FFF"],
+                    // inverseColors: true,
+                    // stops: [0, 100],
+                  },
+                },
+                theme: { mode: "dark" },
+                grid: {
+                  xaxis: {
+                    lines: {
+                      show: true,
+                    },
+                  },
+                  yaxis: {
+                    lines: {
+                      show: false,
+                    },
+                  },
+                },
                 xaxis: {
-                  lines: {
-                    show: true,
-                  },
+                  tickPlacement: "on",
                 },
-                yaxis: {
-                  lines: {
-                    show: false,
-                  },
-                },
-              },
-              xaxis: {
-                tickPlacement: "on",
-              },
-            }}
-          />
+              }}
+            />
+          )}
         </div>
       </Fade>
     </Box>
