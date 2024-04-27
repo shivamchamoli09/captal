@@ -34,7 +34,8 @@ export const getNSEStockPrices = async (): Promise<
       { cache: "no-store" }
     );
     const data = await res.json();
-    return parseSchema(GetStockPricesSchema, data);
+    return data;
+    // return parseSchema(GetStockPricesSchema, data);
   } catch (error) {
     console.log(error);
     return [];
@@ -60,18 +61,20 @@ export const getCryptoPrices = async (): Promise<
 export const getCurrencies = async (): Promise<{
   stocks: z.infer<typeof GetStockPricesSchema>;
   crypto: z.infer<typeof GetCryptoPricesSchema>;
+  nse: z.infer<typeof GetStockPricesSchema>;
 }> => {
   const stocksPromise = getStockPrices();
   const cryptoPromise = getCryptoPrices();
-  // const nsePricesPromise = getNSEStockPrices();
+  const nsePricesPromise = getNSEStockPrices();
   const result = await Promise.all([
     stocksPromise,
     cryptoPromise,
-    // nsePricesPromise,
+    nsePricesPromise,
   ]);
   return {
     stocks: result[0],
     crypto: result[1],
+    nse: result[2],
   };
 };
 

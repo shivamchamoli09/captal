@@ -23,7 +23,7 @@ const PieChartWithTabs: React.FC = () => {
     { mips: mipList, currentPrices: mipCurrentBalanceById }
   );
   const theme = useTheme();
-    
+
   const chartData = useMemo(() => {
     if (value === "Balance") return pieChartBalanceData;
     if (value === "Profit") return pieChartProfitData;

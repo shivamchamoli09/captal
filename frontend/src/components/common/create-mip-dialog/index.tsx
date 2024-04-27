@@ -43,7 +43,7 @@ const AddMip = () => {
     resolver: zodResolver(MipSchema),
   });
 
-const handleAddMip = () => {
+  const handleAddMip = () => {
     try {
       setErrorMsg(null);
       let prevCurrencies: Array<MipSchemaType> =
@@ -74,7 +74,7 @@ const handleAddMip = () => {
     closeDialog();
   };
   const isFormValid = () =>
-    formState.formState.isValid && formState.watch("currencies")?.length;
+    formState.watch("name")?.length && formState.watch("currencies")?.length;
 
   return (
     <React.Fragment>

@@ -91,7 +91,7 @@ export const darkTheme: ThemeOptions = {
             gap: "16px",
             padding: "10px",
             borderRadius: "20px",
-            maxWidth: "640px",
+            maxWidth: "650px",
           },
         },
       },
@@ -103,13 +103,19 @@ export const darkTheme: ThemeOptions = {
           letterSpacing: 1,
           color: "#FFF",
           textTransform: "none",
-          // background: "#31353F",
         },
       },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
+          ".MuiFormLabel-root-MuiInputLabel-root .Mui-focused": {
+            color: "#FFF!important",
+          },
+          ".MuiFormLabel-root": {
+            color: "#FFF!important",
+          },
+          ".MuiOutlinedInput-notchedOutline": { borderColor: "#FFF!important" },
           ".Mui-focused": {
             color: "#FFF",
           },
@@ -144,6 +150,18 @@ export const darkTheme: ThemeOptions = {
         root: {
           width: "36px",
           height: "36px",
+        },
+      },
+    },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: {
+          ".MuiButton-contained": {
+            background: "#0f5940",
+          },
+          ".MuiButtonBase-root": {
+            borderColor: "#FFF",
+          },
         },
       },
     },

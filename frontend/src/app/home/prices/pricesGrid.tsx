@@ -1,8 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Stack, TextField } from "@mui/material";
-import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  useGridApiRef,
+} from "@mui/x-data-grid";
 import { CurrencyTypes } from "@/core/types/currency.type";
 import { getCurrencies } from "@/lib/external/currencyPrices";
 import { useQuery } from "@tanstack/react-query";
@@ -11,6 +16,7 @@ import { Tabs } from "@/components/base/Tabs";
 import { Card } from "@/components/base/Card";
 import { CurrencySchemaType } from "@/lib/domains";
 import { debounce } from "@mui/material/utils";
+import { convertToInternationalCurrencySystem } from "@/lib/utils/parser";
 
 interface IPricesGrid {}
 
@@ -20,7 +26,6 @@ const columns: GridColDef[] = [
     headerName: "Name",
     field: "shortName",
     width: 120,
-    editable: true,
   },
   {
     headerName: "Currency",
@@ -33,62 +38,74 @@ const columns: GridColDef[] = [
     field: "marketCap",
     type: "number",
     width: 130,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${convertToInternationalCurrencySystem(params.value!)}</>
+    ),
   },
   {
     headerName: "Regular Volume",
     field: "regularMarketVolume",
     type: "number",
     width: 110,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>{convertToInternationalCurrencySystem(params.value!)}</>
+    ),
   },
   {
     headerName: "Shares Outstanding",
     field: "sharesOutstanding",
     type: "number",
     width: 130,
-    editable: true,
   },
   {
     headerName: "Current price",
     field: "regularMarketPrice",
     type: "number",
     width: 90,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${params.value?.toLocaleString?.()}</>
+    ),
   },
   {
     headerName: "Open",
     field: "regularMarketOpen",
     type: "number",
     width: 90,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${params.value?.toLocaleString?.()}</>
+    ),
   },
   {
     headerName: "High",
     field: "regularMarketDayHigh",
     type: "number",
     width: 90,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${params.value?.toLocaleString?.()}</>
+    ),
   },
   {
     headerName: "Low",
     field: "regularMarketDayLow",
     type: "number",
     width: 90,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${params.value?.toLocaleString?.()}</>
+    ),
   },
   {
     headerName: "Closed",
     field: "regularMarketPreviousClose",
     type: "number",
     width: 100,
-    editable: true,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>${params.value?.toLocaleString?.()}</>
+    ),
   },
   {
     headerName: "Market",
     field: "marketState",
     width: 100,
-    editable: true,
   },
 ];
 
@@ -102,25 +119,17 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
     queryFn: async () => {
       const curr = await getCurrencies();
       const stockMap = new Map<string, CurrencySchemaType>();
-      for (const s of curr?.stocks) {
+      for (const s of [...curr?.stocks, ...curr?.nse]) {
         if (!s.shortName) continue;
         if (stockMap.has(s.shortName)) continue;
         stockMap.set(s.shortName, s);
       }
-      setCurrencies([...stockMap?.values(), ...curr?.crypto]);
+      setCurrencies([...curr?.crypto, ...stockMap?.values()]);
       return curr;
     },
     retry: 0,
     refetchOnWindowFocus: false,
   });
-
-  useEffect(() => {
-    async function getQuotes() {
-      const res = await getCurrencies();
-    }
-
-    getQuotes();
-  }, []);
 
   // useEffect(() => {
   //   setInterval(() => {
@@ -146,6 +155,12 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
     updateSearchValue(newValue);
   }
 
+  const getRowsByCurrencyType = useMemo(() => {
+    if (value === CurrencyTypes.CRYPTO) return prices?.crypto;
+    else if (value === CurrencyTypes.NYSE) return prices?.stocks;
+    return prices?.nse;
+  }, [prices, value]);
+
   if (!prices) return <>Loading...</>;
 
   return (
@@ -153,7 +168,16 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
       <Stack
         direction="row"
         justifyContent="space-between"
-        sx={{ width: "100%" }}
+        // sx={{ width: "100%" }}
+        sx={(theme) => ({
+          width: "100%",
+          [theme.breakpoints.only("sm")]: {
+            display: "block",
+          },
+          [theme.breakpoints.only("xs")]: {
+            display: "block",
+          },
+        })}
       >
         <Tabs
           tabs={Object.keys(CurrencyTypes)}
@@ -172,7 +196,7 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
       <DataGrid
         apiRef={apiRef}
         getRowId={(row) => row.symbol}
-        rows={value === CurrencyTypes.CRYPTO ? prices?.crypto : prices?.stocks}
+        rows={getRowsByCurrencyType!}
         columns={columns}
         slotProps={{
           toolbar: {

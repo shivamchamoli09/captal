@@ -49,7 +49,7 @@ const Balance: React.FC<IBalance> = (props) => {
                 Balance
               </Typography>
               <Typography variant="h3">
-                ${latestBal?.toLocaleString?.()}
+                {latestBal?.toLocaleString?.()}
               </Typography>
             </Box>
 
@@ -71,9 +71,10 @@ const Balance: React.FC<IBalance> = (props) => {
               <Typography
                 variant="h6"
                 color={getProgressColor(netDiff)}
-                fontWeight={"bold"}
+                fontWeight={"medium"}
               >
-                ${netDiff?.toLocaleString?.()}
+                {netDiff < 0 ? "-" : ""}$
+                {Math.abs(netDiff)?.toLocaleString?.()}
               </Typography>
             </Grid>
 
