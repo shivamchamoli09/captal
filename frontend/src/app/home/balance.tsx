@@ -49,7 +49,7 @@ const Balance: React.FC<IBalance> = (props) => {
                 Balance
               </Typography>
               <Typography variant="h3">
-                {latestBal?.toLocaleString?.()}
+                ${latestBal?.toLocaleString?.()}
               </Typography>
             </Box>
 
