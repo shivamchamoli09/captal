@@ -3,12 +3,7 @@
 import React, { lazy, useMemo } from "react";
 import { useMipStore } from "@/store";
 import { useMipChart } from "@/hooks/use-mip-charts";
-import {
-  Box,
-  Skeleton,
-  Stack,
-  useTheme,
-} from "@mui/material";
+import { Box, Skeleton, Stack, useTheme } from "@mui/material";
 import { Tabs } from "@/components/base/Tabs";
 const PieChart = lazy(() => import("@/components/chart/PieChart"));
 
@@ -68,6 +63,7 @@ const PieChartWithTabs: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         // overflowX: "auto",
+        height: "100%",
       }}
     >
       <Tabs
@@ -76,35 +72,37 @@ const PieChartWithTabs: React.FC = () => {
         onChange={(val) => setValue(val as typeof value)}
       />
 
-      <PieChart
-        width={370}
-        height={320}
-        data={chartData}
-        options={{
-          colors: [
-            "#191970",
-            "#556B2F",
-            "#008B8B",
-            "#FF69B4",
-            "#FFA500",
-            "#800080",
-            "#800020",
-            "#228B22",
-            "#000080",
-            "#008080",
-          ],
-          tooltip: {
-            y: {
-              formatter: (val) => {
-                return "$" + val;
+      <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
+        <PieChart
+          // width={370}
+          height={320}
+          data={chartData}
+          options={{
+            colors: [
+              "#191970",
+              "#556B2F",
+              "#008B8B",
+              "#FF69B4",
+              "#FFA500",
+              "#800080",
+              "#800020",
+              "#228B22",
+              "#000080",
+              "#008080",
+            ],
+            tooltip: {
+              y: {
+                formatter: (val) => {
+                  return "$" + val;
+                },
               },
             },
-          },
-          legend: {
-            labels: { colors: theme.palette.text.primary },
-          },
-        }}
-      />
+            legend: {
+              labels: { colors: theme.palette.text.primary },
+            },
+          }}
+        />
+      </Box>
     </Box>
   );
 };
