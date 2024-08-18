@@ -14,12 +14,29 @@ export const convertToInternationalCurrencySystem = (
   if (!labelValue) return "";
   // Nine Zeroes for Billions
   return Math.abs(Number(labelValue)) >= 1.0e9
-    ? Number((Math.abs(Number(labelValue)) / 1.0e9).toFixed(2)).toLocaleString() + " B"
+    ? Number((Math.abs(Number(labelValue)) / 1.0e9).toFixed(2)).toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits: 2,
+        }
+      ) + " B"
     : // Six Zeroes for Millions
     Math.abs(Number(labelValue)) >= 1.0e6
-    ? Number((Math.abs(Number(labelValue)) / 1.0e6).toFixed(2)).toLocaleString() + " M"
+    ? Number((Math.abs(Number(labelValue)) / 1.0e6).toFixed(2)).toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits: 2,
+        }
+      ) + " M"
     : // Three Zeroes for Thousands
     Math.abs(Number(labelValue)) >= 1.0e3
-    ? Number((Math.abs(Number(labelValue)) / 1.0e3).toFixed(2)).toLocaleString() + " K"
-    : Number(Math.abs(Number(labelValue))).toLocaleString();
+    ? Number((Math.abs(Number(labelValue)) / 1.0e3).toFixed(2)).toLocaleString(
+        "en-US",
+        {
+          maximumFractionDigits: 2,
+        }
+      ) + " K"
+    : Number(Math.abs(Number(labelValue))).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
 };

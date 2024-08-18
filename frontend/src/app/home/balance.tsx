@@ -49,7 +49,10 @@ const Balance: React.FC<IBalance> = (props) => {
                 Balance
               </Typography>
               <Typography variant="h3">
-                ${latestBal?.toLocaleString?.()}
+                $
+                {latestBal?.toLocaleString?.("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </Typography>
             </Box>
 
@@ -74,14 +77,19 @@ const Balance: React.FC<IBalance> = (props) => {
                 fontWeight={"medium"}
               >
                 {netDiff < 0 ? "-" : ""}$
-                {Math.abs(netDiff)?.toLocaleString?.()}
+                {Math.abs(netDiff)?.toLocaleString?.("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </Typography>
             </Grid>
 
             <Grid item xs={6} textAlign={"end"}>
               <Typography variant="h6">Invested</Typography>
               <Typography variant="body1" color={"text"}>
-                ${investedAmount?.toLocaleString?.()}
+                $
+                {investedAmount?.toLocaleString?.("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </Typography>
             </Grid>
           </Grid>

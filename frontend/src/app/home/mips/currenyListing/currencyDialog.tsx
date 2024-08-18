@@ -137,7 +137,9 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
             }}
           >
             <Typography variant="h5">
-              Invested: ${totalAmount?.toLocaleString?.()}
+              Invested: ${totalAmount?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
             <Stack direction={"row"} alignItems={"center"}>
               <ProgressIcon netDiff={totalNewAmount - totalAmount!} />
@@ -152,7 +154,9 @@ export const CurrencyListDialog: React.FC<ICurrencyListDialog> = ({
               variant="h5"
               color={getProgressColor(totalNewAmount - totalAmount!)}
             >
-              ${totalNewAmount?.toLocaleString?.()}
+              ${totalNewAmount?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
           </Card>
         </Box>

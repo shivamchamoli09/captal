@@ -108,7 +108,9 @@ const Transactions: React.FC<ITransactions> = () => {
 
             <Box>
               <Typography variant="body1" fontWeight={"medium"}>
-                ${tran.regularMarketPrice?.toLocaleString?.()}
+                ${tran.regularMarketPrice?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
               </Typography>
               <Typography
                 variant="caption"

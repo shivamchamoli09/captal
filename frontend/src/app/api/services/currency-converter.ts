@@ -25,6 +25,7 @@ async function getQuotes(symbols: Array<string>) {
     }
     return result;
   } catch (error) {
+    console.log("error: ", error);
     return [];
   }
 }
@@ -34,8 +35,9 @@ export const convertToUSD = async (
 ): Promise<Array<CurrencySchemaType>> => {
   const usdToInr = await getQuotes(["INR=X"]);
   const delta: number = Number(usdToInr?.[0]?.regularMarketPrice?.toFixed(3));
-  return currencies.map((c) =>
-    c?.currency === "USD"
+  const filteredCurrencies = currencies?.filter((c) => !!c?.regularMarketPrice);
+  return filteredCurrencies?.map((c) => {
+    return c?.currency === "USD"
       ? c
       : {
           ...c,
@@ -54,6 +56,6 @@ export const convertToUSD = async (
           regularMarketOpen: c?.regularMarketOpen
             ? c.regularMarketOpen / delta
             : 0,
-        }
-  );
+        };
+  });
 };

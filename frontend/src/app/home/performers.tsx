@@ -109,7 +109,10 @@ const TopBadPerformer: React.FC<ITopBadPerformer> = () => {
             </Typography>
             <Stack mt={2}>
               <Typography variant="h6" textAlign={"center"} gutterBottom>
-                ${quote.regularMarketPrice?.toLocaleString?.()}
+                $
+                {quote.regularMarketPrice?.toLocaleString?.("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </Typography>
 
               <Box ml="auto" mr="auto" display={"flex"} alignItems={"center"}>

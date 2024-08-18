@@ -56,6 +56,9 @@ const columns: GridColDef[] = [
     field: "sharesOutstanding",
     type: "number",
     width: 130,
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <>{convertToInternationalCurrencySystem(params.value!)}</>
+    ),
   },
   {
     headerName: "Current price",
@@ -63,7 +66,12 @@ const columns: GridColDef[] = [
     type: "number",
     width: 90,
     renderCell: (params: GridRenderCellParams<any, number>) => (
-      <>${params.value?.toLocaleString?.()}</>
+      <>
+        $
+        {params.value?.toLocaleString?.("en-US", {
+          maximumFractionDigits: 2,
+        })}
+      </>
     ),
   },
   {
@@ -72,7 +80,12 @@ const columns: GridColDef[] = [
     type: "number",
     width: 90,
     renderCell: (params: GridRenderCellParams<any, number>) => (
-      <>${params.value?.toLocaleString?.()}</>
+      <>
+        $
+        {params.value?.toLocaleString?.("en-US", {
+          maximumFractionDigits: 2,
+        })}
+      </>
     ),
   },
   {
@@ -81,7 +94,12 @@ const columns: GridColDef[] = [
     type: "number",
     width: 90,
     renderCell: (params: GridRenderCellParams<any, number>) => (
-      <>${params.value?.toLocaleString?.()}</>
+      <>
+        $
+        {params.value?.toLocaleString?.("en-US", {
+          maximumFractionDigits: 2,
+        })}
+      </>
     ),
   },
   {
@@ -90,7 +108,12 @@ const columns: GridColDef[] = [
     type: "number",
     width: 90,
     renderCell: (params: GridRenderCellParams<any, number>) => (
-      <>${params.value?.toLocaleString?.()}</>
+      <>
+        $
+        {params.value?.toLocaleString?.("en-US", {
+          maximumFractionDigits: 2,
+        })}
+      </>
     ),
   },
   {
@@ -99,7 +122,12 @@ const columns: GridColDef[] = [
     type: "number",
     width: 100,
     renderCell: (params: GridRenderCellParams<any, number>) => (
-      <>${params.value?.toLocaleString?.()}</>
+      <>
+        $
+        {params.value?.toLocaleString?.("en-US", {
+          maximumFractionDigits: 2,
+        })}
+      </>
     ),
   },
   {

@@ -13,6 +13,7 @@ import { useMipStore } from "@/store";
 import { useCurrencyStore } from "@/store/currencies.store";
 import { CurrencySchemaType } from "@/lib/domains";
 import { Card } from "@/components/base/Card";
+import { DummyMips } from "./lib";
 
 interface IMipList {}
 
@@ -47,16 +48,16 @@ const MipList: React.FC<IMipList> = () => {
     deleteMipCurrentBalance,
     setIsLoading,
   } = useMipStore();
+
   useEffect(() => {
-    setMipList(
-      (getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
-        schema: z.array(MipSchema),
-      }) as any) ?? []
-    );
+    const savedMips = getFromLocalStorage(LOCAL_STORAGE_KEYS.mips, {
+      schema: z.array(MipSchema),
+    }) as any;
+    setMipList(savedMips ?? []);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
-  }, [setMipList]);
+    }, 1500);
+  }, [setIsLoading, setMipList]);
 
   const handleDeleteMip = () => {
     try {
@@ -71,7 +72,7 @@ const MipList: React.FC<IMipList> = () => {
       console.log(error);
     }
   };
-  if (!mips?.length)
+  if (!mips?.length && !DummyMips?.length)
     return (
       <Card
         sx={{
@@ -95,22 +96,24 @@ const MipList: React.FC<IMipList> = () => {
   return (
     <>
       <Grid container spacing={2} height={"100%"} alignItems={"start"}>
-        {mips?.map((mip, index) => (
-          <Grid item md={3} sm={6} xs={12} key={index}>
-            <MipDetails
-              {...mip}
-              onDelete={(mip) => {
-                setCurrentMip(mip);
-                openConfirmationDelete();
-              }}
-              onClick={() => {
-                setCurrentMip(mip);
-                setShowCurrencyListDialog(true);
-              }}
-              currentPrices={latestPricesMapBySymbol}
-            />
-          </Grid>
-        ))}
+        {(mips?.length ? mips : (DummyMips as Array<MipSchemaType>))?.map(
+          (mip, index) => (
+            <Grid item md={3} sm={6} xs={12} key={index}>
+              <MipDetails
+                {...mip}
+                onDelete={(mip) => {
+                  setCurrentMip(mip);
+                  openConfirmationDelete();
+                }}
+                onClick={() => {
+                  setCurrentMip(mip);
+                  setShowCurrencyListDialog(true);
+                }}
+                currentPrices={latestPricesMapBySymbol}
+              />
+            </Grid>
+          )
+        )}
       </Grid>
       <ConfirmationDialog
         title={`Are you sure you want to delete ${currentMip?.name}?`}

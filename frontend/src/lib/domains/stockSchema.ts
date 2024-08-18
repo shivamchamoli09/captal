@@ -3,11 +3,11 @@ import { z } from "zod";
 export const StockSchema = z.object({
   language: z.string(),
   region: z.enum(["US"]),
-  quoteType: z.enum(["EQUITY", "CRYPTOCURRENCY"]),
+  quoteType: z.enum(["EQUITY", "CRYPTOCURRENCY", "MUTUALFUND"]),
   typeDisp: z.string().nullish(),
   quoteSourceName: z.string(),
   triggerable: z.boolean(),
-  customPriceAlertConfidence: z.enum(["HIGH", "MEDIUM", "LOW"]),
+  customPriceAlertConfidence: z.enum(["HIGH", "MEDIUM", "LOW", "NONE"]),
   lastCloseTevEbitLtm: z.number().nullish().nullish(),
   lastClosePriceToNNWCPerShare: z.number().nullish(),
   currency: z.enum(["USD"]).nullish(),

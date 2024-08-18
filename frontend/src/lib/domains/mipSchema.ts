@@ -7,6 +7,7 @@ export const MipSchema = z.object({
   name: z.string().min(1),
   currencies: z.array(CurrencySchema),
   createdDate: z.string().nullish(),
+  isDummy: z.boolean().nullish(),
 });
 
 export type MipSchemaType = z.infer<typeof MipSchema>;

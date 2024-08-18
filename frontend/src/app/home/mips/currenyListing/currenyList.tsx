@@ -56,7 +56,9 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
             width={100}
             minWidth={100}
           >
-            ${tran.regularMarketPrice?.toLocaleString?.()}
+            ${tran.regularMarketPrice?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
           </Typography>
 
           <Stack direction={"row"} width={120} minWidth={120}>
@@ -88,7 +90,9 @@ const CurrencyList: React.FC<ICurrencyList> = ({ currencies }) => {
               wordWrap: "break-word",
             }}
           >
-            ${tran.latestRegularMarketPrice?.toLocaleString?.()}
+            ${tran.latestRegularMarketPrice?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
           </Typography>
         </Stack>
       ))}

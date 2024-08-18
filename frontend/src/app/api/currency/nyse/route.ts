@@ -10,7 +10,7 @@ export async function GET() {
         region: "US",
         lang: "en-US",
       },
-      { validateResult: false }
+      { validateResult: false  }
     );
     return Response.json(result?.quotes);
   } catch (error) {

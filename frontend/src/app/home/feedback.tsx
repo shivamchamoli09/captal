@@ -50,7 +50,6 @@ const FeedBackForm: React.FC = () => {
   const handleSubmitFeedback = async () => {
     try {
       setIsLoading(true);
-      console.log(form.getValues());
       await fetch("/api/feedback", {
         method: "POST",
         body: JSON.stringify(form.getValues()),

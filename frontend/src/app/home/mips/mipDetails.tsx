@@ -30,7 +30,6 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
   const [currentTotalPrice, setCurrentTotalPrice] = useState<number>(0);
   const queryClient = useQueryClient();
   const { setMipCurrentBalance, setIsLoading, isLoading } = useMipStore();
-
   useEffect(() => {
     if (!props.currencies?.length) {
       setIsLoading(false);
@@ -147,18 +146,42 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
       <Box>
         <Stack direction={"row"} alignItems={"start"} mt={1}>
           <Box>
-            <Typography variant="h4" gutterBottom>
-              ${currentTotalPrice?.toFixed(3)}
+            <Typography
+              id="current-price-para"
+              variant="h4"
+              gutterBottom
+              sx={{ width: "115px", wordBreak: "break-word" }}
+            >
+              $
+              {currentTotalPrice?.toLocaleString("en-US", {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
             <Typography variant="body1">
-              ${totalMipAmount?.toFixed(3)}
+              $
+              {totalMipAmount?.toLocaleString("en-US", {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
           </Box>
 
-          <Box ml="auto" display={"flex"} alignItems={"center"} mb={1}>
+          <Box
+            ml="auto"
+            display={"flex"}
+            alignItems={"center"}
+            mb={1}
+            justifyContent={"end"}
+          >
             {<ProgressIcon netDiff={netDiff} />}
-            <Typography variant="h6" color={getProgressColor(netDiff)}>
-              ${Math.abs(netDiff)?.toLocaleString?.()}
+            <Typography
+              variant="h6"
+              color={getProgressColor(netDiff)}
+              sx={{ maxWidth: "85px", wordBreak: "break-word" }}
+            >
+              $
+              {Math.abs(netDiff)?.toLocaleString?.("en-US", {
+                maximumFractionDigits: 2,
+              })}
             </Typography>
           </Box>
         </Stack>
@@ -176,17 +199,19 @@ const MipDetails: React.FC<IMipDetails> = (props) => {
             })}
           </Typography>
 
-          <Stack direction={"row"}>
-            <Tooltip title="View Holdings">
-              <IconButton onClick={props.onClick}>
-                <AccountBalanceWalletIcon />
-              </IconButton>
-            </Tooltip>
+          {!props?.isDummy && (
+            <Stack direction={"row"}>
+              <Tooltip title="View Holdings">
+                <IconButton onClick={props.onClick}>
+                  <AccountBalanceWalletIcon />
+                </IconButton>
+              </Tooltip>
 
-            <IconButton onClick={() => props.onDelete?.(props)}>
-              <DeleteOutlineOutlined color="error" fontSize="medium" />
-            </IconButton>
-          </Stack>
+              <IconButton onClick={() => props.onDelete?.(props)}>
+                <DeleteOutlineOutlined color="error" fontSize="medium" />
+              </IconButton>
+            </Stack>
+          )}
         </Stack>
       </Box>
     </Card>

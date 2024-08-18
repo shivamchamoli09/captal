@@ -5,6 +5,7 @@ import AppThemeProvider from "@/providers/theme.provider";
 import { CssBaseline } from "@mui/material";
 import { ReactQueryClientProvider } from "@/providers/react-query.provider";
 import { Header } from "./layout/header";
+import Footer from "./layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             <CssBaseline />
             <Header />
             {children}
+            <Footer />
           </AppThemeProvider>
         </ReactQueryClientProvider>
       </body>

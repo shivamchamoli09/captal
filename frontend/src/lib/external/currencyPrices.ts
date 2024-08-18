@@ -34,8 +34,8 @@ export const getNSEStockPrices = async (): Promise<
       { cache: "no-store" }
     );
     const data = await res.json();
-    return data;
-    // return parseSchema(GetStockPricesSchema, data);
+    // return data;
+    return parseSchema(GetStockPricesSchema, data);
   } catch (error) {
     console.log(error);
     return [];
