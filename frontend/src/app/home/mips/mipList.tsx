@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Grid, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { MipDetails } from "./mipDetails";
 import { MipSchema, MipSchemaType } from "@/lib/domains/mipSchema";
@@ -14,6 +14,9 @@ import { useCurrencyStore } from "@/store/currencies.store";
 import { CurrencySchemaType } from "@/lib/domains";
 import { Card } from "@/components/base/Card";
 import { DummyMips } from "./lib";
+import { EstimatedPricesSchemaType } from "@/lib/domains/estimatedPrices";
+import { getTomorrowEstimations } from "@/lib/external/estimations";
+import { PriceEstimationlist } from "../estimations/price-estimation-card";
 
 interface IMipList {}
 
@@ -32,6 +35,7 @@ const MipList: React.FC<IMipList> = () => {
     setCurrentMip(undefined);
     setConfirmDeletion(false);
   };
+  const [selectedTab, setSelectedTab] = useState<number>(0);
 
   const latestPricesMapBySymbol: Map<string, CurrencySchemaType> =
     useMemo(() => {
@@ -41,12 +45,14 @@ const MipList: React.FC<IMipList> = () => {
       }
       return map;
     }, [currentPrices]);
+  const [estimations, setEstimations] = useState<EstimatedPricesSchemaType>([]);
 
   const {
     mipList: mips,
     setMipList,
     deleteMipCurrentBalance,
     setIsLoading,
+    isLoading,
   } = useMipStore();
 
   useEffect(() => {
@@ -56,8 +62,20 @@ const MipList: React.FC<IMipList> = () => {
     setMipList(savedMips ?? []);
     setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 1000);
   }, [setIsLoading, setMipList]);
+
+  useEffect(() => {
+    const fetchEstimations = async () => {
+      try {
+        const estimates = await getTomorrowEstimations();
+        setEstimations(estimates);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchEstimations();
+  }, [setEstimations]);
 
   const handleDeleteMip = () => {
     try {
@@ -72,29 +90,8 @@ const MipList: React.FC<IMipList> = () => {
       console.log(error);
     }
   };
-  if (!mips?.length && !DummyMips?.length)
+  const renderMips = () => {
     return (
-      <Card
-        sx={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          p: 4,
-        }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Embark on a journey of financial empowerment and growth with our
-          innovative MIP (Mixed Investment Plan) solutions, designed to help you
-          realize your long-term goals through disciplined and strategic
-          investment, one mip at a time. Click on the add icon above to create
-          your first mip.
-        </Typography>
-      </Card>
-    );
-  return (
-    <>
       <Grid container spacing={2} height={"100%"} alignItems={"start"}>
         {(mips?.length ? mips : (DummyMips as Array<MipSchemaType>))?.map(
           (mip, index) => (
@@ -114,6 +111,72 @@ const MipList: React.FC<IMipList> = () => {
             </Grid>
           )
         )}
+      </Grid>
+    );
+  };
+  const renderEstimations = () => {
+    return (
+      <Grid container spacing={2} height={"100%"} alignItems={"start"}>
+        {estimations?.map((estimation, index) => (
+          <Grid item md={3} sm={6} xs={12} key={index}>
+            <PriceEstimationlist data={estimation} />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  };
+
+  if (!mips?.length && !DummyMips?.length)
+    return (
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          p: 4,
+        }}>
+        <Typography variant="h6" gutterBottom>
+          Embark on a journey of financial empowerment and growth with our
+          innovative MIP (Mixed Investment Plan) solutions, designed to help you
+          realize your long-term goals through disciplined and strategic
+          investment, one mip at a time. Click on the add icon above to create
+          your first mip.
+        </Typography>
+      </Card>
+    );
+  return (
+    <>
+      <Grid container gap={2}>
+        <ButtonGroup variant="contained" aria-label="Basic button group">
+          <Button
+            variant={selectedTab === 0 ? "contained" : "outlined"}
+            onClick={() => {
+              setSelectedTab(0);
+            }}>
+            My Mips
+          </Button>
+          <Button
+            variant={selectedTab === 1 ? "contained" : "outlined"}
+            onClick={() => {
+              setSelectedTab(1);
+            }}>
+            {`Estimations ${
+              estimations?.[0]?.estimatedDate
+                ? "for " +
+                  new Date(estimations?.[0]?.estimatedDate)?.toLocaleDateString(
+                    "en-US",
+                    {
+                      weekday: "long",
+                    }
+                  )
+                : ""
+            }`}
+          </Button>
+        </ButtonGroup>
+        {selectedTab === 0 && renderMips()}
+        {selectedTab === 1 && renderEstimations()}
       </Grid>
       <ConfirmationDialog
         title={`Are you sure you want to delete ${currentMip?.name}?`}
