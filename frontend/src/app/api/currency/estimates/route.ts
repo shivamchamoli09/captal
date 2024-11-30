@@ -15,7 +15,7 @@ export async function GET() {
         "https://www.googleapis.com/auth/spreadsheets",
       ],
     });
-    const sheetId = "134YHKyeHtH74vEv9pmqQlfFMKaddteIrTdDvMADOz40";
+    const sheetId = process.env.ESTIMATED_PRICES_SHEET_ID;
     const sheets = google.sheets({
       auth,
       version: "v4",
