@@ -60,3 +60,6 @@ export async function GET() {
     return Response.json([]);
   }
 }
+
+
+export const revalidate = 0;

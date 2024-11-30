@@ -4,7 +4,7 @@ import { isDynamicServerError } from "next/dist/client/components/hooks-server-c
 export async function GET() {
   try {
     const queryOptions = {
-      count: 5,
+      count: 6,
       region: "US",
       lang: "en-US",
     };
@@ -20,3 +20,5 @@ export async function GET() {
     return Response.json([]);
   }
 }
+
+export const revalidate = 0;

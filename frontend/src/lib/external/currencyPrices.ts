@@ -4,6 +4,7 @@ import { YAHOO_COOKIES } from "../constants/yahooCookies.const";
 import { StockSchema } from "../domains/stockSchema";
 import { CryptoSchema } from "../domains/cryptoSchema";
 import { CurrencyListSchema, CurrencySchema } from "../domains";
+import axios from "axios";
 
 export const GetStockPricesSchema = z.array(StockSchema);
 export const GetCryptoPricesSchema = z.array(CryptoSchema);
@@ -14,12 +15,10 @@ export const getStockPrices = async (): Promise<
   z.infer<typeof GetStockPricesSchema>
 > => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nyse`,
-      { cache: "no-store" }
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nyse`
     );
-    const data = await res.json();
-    return parseSchema(GetStockPricesSchema, data);
+    return parseSchema(GetStockPricesSchema, res?.data);
   } catch (error) {
     console.log(error);
     return [];
@@ -29,13 +28,10 @@ export const getNSEStockPrices = async (): Promise<
   z.infer<typeof GetStockPricesSchema>
 > => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nse`,
-      { cache: "no-store" }
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/nse`
     );
-    const data = await res.json();
-    // return data;
-    return parseSchema(GetStockPricesSchema, data);
+    return parseSchema(GetStockPricesSchema, res?.data);
   } catch (error) {
     console.log(error);
     return [];
@@ -46,12 +42,10 @@ export const getCryptoPrices = async (): Promise<
   z.infer<typeof GetCryptoPricesSchema>
 > => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/crypto`,
-      { cache: "no-store" }
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/currency/crypto`
     );
-    const data = await res.json();
-    return parseSchema(GetCryptoPricesSchema, data);
+    return parseSchema(GetCryptoPricesSchema, res?.data);
   } catch (error) {
     console.log(error);
     return [];
@@ -79,19 +73,15 @@ export const getCurrencies = async (): Promise<{
 };
 
 export const getQuotes = async ({ symbols }: { symbols: string }) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/quote?symbols=${symbols}`,
-    { cache: "no-store" }
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/quote?symbols=${symbols}`
   );
-  const data = await res.json();
-  return data;
+  return res?.data;
 };
 
 export const getDailyGainers = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/daily-gainers`,
-    { cache: "no-store" }
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/currency/daily-gainers`
   );
-  const data = await res.json();
-  return parseSchema(CurrencyListSchema, data);
+  return parseSchema(CurrencyListSchema, res?.data);
 };

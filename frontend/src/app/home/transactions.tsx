@@ -36,7 +36,7 @@ const Transactions: React.FC<ITransactions> = () => {
           height={20}
           sx={{ ml: "auto", mr: "auto" }}
         />
-        {[1, 2, 3, 4, 5].map((_, i) => (
+        {[1, 2, 3, 4, 5, 6].map((_, i) => (
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
@@ -77,11 +77,11 @@ const Transactions: React.FC<ITransactions> = () => {
       <Stack direction={"row"} justifyContent={"space-between"}>
         <Typography
           variant="h2"
-          fontWeight={"medium"}
           width={"100%"}
           textAlign={"center"}
+          fontWeight="bold"
         >
-          Top 5 Gainers
+          Top Gainers
         </Typography>
       </Stack>
 
@@ -108,9 +108,10 @@ const Transactions: React.FC<ITransactions> = () => {
 
             <Box>
               <Typography variant="body1" fontWeight={"medium"}>
-                ${tran.regularMarketPrice?.toLocaleString?.("en-US", {
-                maximumFractionDigits: 2,
-              })}
+                $
+                {tran.regularMarketPrice?.toLocaleString?.("en-US", {
+                  maximumFractionDigits: 2,
+                })}
               </Typography>
               <Typography
                 variant="caption"

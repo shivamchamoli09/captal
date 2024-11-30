@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, ButtonGroup, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { MipDetails } from "./mipDetails";
 import { MipSchema, MipSchemaType } from "@/lib/domains/mipSchema";
@@ -90,7 +97,36 @@ const MipList: React.FC<IMipList> = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isLoading) return;
+    if (!mips?.length) {
+      setSelectedTab(1);
+    } else setSelectedTab(0);
+  }, [mips?.length, isLoading]);
+
   const renderMips = () => {
+    if (!mips?.length)
+      return (
+        <Card
+          sx={{
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            p: 4,
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Embark on a journey of financial empowerment and growth with our
+            innovative MIP (Mixed Investment Plan) solutions, designed to help
+            you realize your long-term goals through disciplined and strategic
+            investment, one mip at a time. Click on the add icon above to create
+            your first mip.
+          </Typography>
+        </Card>
+      );
     return (
       <Grid container spacing={2} height={"100%"} alignItems={"start"}>
         {(mips?.length ? mips : (DummyMips as Array<MipSchemaType>))?.map(
@@ -116,7 +152,13 @@ const MipList: React.FC<IMipList> = () => {
   };
   const renderEstimations = () => {
     return (
-      <Grid container spacing={2} height={"100%"} alignItems={"start"}>
+      <Grid
+        container
+        spacing={2}
+        height={"100%"}
+        alignItems={"start"}
+        justifyContent={"space-between"}
+      >
         {estimations?.map((estimation, index) => (
           <Grid item md={3} sm={6} xs={12} key={index}>
             <PriceEstimationlist data={estimation} />
@@ -126,42 +168,25 @@ const MipList: React.FC<IMipList> = () => {
     );
   };
 
-  if (!mips?.length && !DummyMips?.length)
-    return (
-      <Card
-        sx={{
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          p: 4,
-        }}>
-        <Typography variant="h6" gutterBottom>
-          Embark on a journey of financial empowerment and growth with our
-          innovative MIP (Mixed Investment Plan) solutions, designed to help you
-          realize your long-term goals through disciplined and strategic
-          investment, one mip at a time. Click on the add icon above to create
-          your first mip.
-        </Typography>
-      </Card>
-    );
   return (
     <>
       <Grid container gap={2}>
         <ButtonGroup variant="contained" aria-label="Basic button group">
           <Button
+            // disabled={!mips?.length}
             variant={selectedTab === 0 ? "contained" : "outlined"}
             onClick={() => {
               setSelectedTab(0);
-            }}>
+            }}
+          >
             My Mips
           </Button>
           <Button
             variant={selectedTab === 1 ? "contained" : "outlined"}
             onClick={() => {
               setSelectedTab(1);
-            }}>
+            }}
+          >
             {`Estimations ${
               estimations?.[0]?.estimatedDate
                 ? "for " +
