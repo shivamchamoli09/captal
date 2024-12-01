@@ -24,6 +24,9 @@ import { DummyMips } from "./lib";
 import { EstimatedPricesSchemaType } from "@/lib/domains/estimatedPrices";
 import { getTomorrowEstimations } from "@/lib/external/estimations";
 import { PriceEstimationlist } from "../estimations/price-estimation-card";
+import { NoResults } from "@/static/svgs/noresult";
+import { Finance1 } from "@/static/svgs/finance";
+import { Finance2 } from "@/static/svgs/finance2";
 
 interface IMipList {}
 
@@ -116,14 +119,28 @@ const MipList: React.FC<IMipList> = () => {
             alignItems: "center",
             flexDirection: "column",
             p: 4,
-          }}
-        >
+          }}>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "30px",
+            }}>
+            <Finance1 />
+            <Box
+              sx={(theme) => ({
+                [theme.breakpoints.only("xs")]: {
+                  display: "none",
+                },
+              })}>
+              <Finance2 />
+            </Box>
+          </Box>
           <Typography variant="h6" gutterBottom>
             Embark on a journey of financial empowerment and growth with our
             innovative MIP (Mixed Investment Plan) solutions, designed to help
             you realize your long-term goals through disciplined and strategic
             investment, one mip at a time. Click on the add icon above to create
-            your first mip.
+            your first Mip.
           </Typography>
         </Card>
       );
@@ -157,8 +174,7 @@ const MipList: React.FC<IMipList> = () => {
         spacing={2}
         height={"100%"}
         alignItems={"start"}
-        justifyContent={"space-between"}
-      >
+        justifyContent={"space-between"}>
         {estimations?.map((estimation, index) => (
           <Grid item md={3} sm={6} xs={12} key={index}>
             <PriceEstimationlist data={estimation} />
@@ -171,22 +187,30 @@ const MipList: React.FC<IMipList> = () => {
   return (
     <>
       <Grid container gap={2}>
-        <ButtonGroup variant="contained" aria-label="Basic button group">
+        <ButtonGroup
+          variant="contained"
+          aria-label="Basic button group"
+          sx={{
+            ".MuiButtonBase-root": {
+              border: "none",
+              ":hover": {
+                backgoundColor: "transparent",
+              },
+            },
+          }}>
           <Button
             // disabled={!mips?.length}
             variant={selectedTab === 0 ? "contained" : "outlined"}
             onClick={() => {
               setSelectedTab(0);
-            }}
-          >
+            }}>
             My Mips
           </Button>
           <Button
             variant={selectedTab === 1 ? "contained" : "outlined"}
             onClick={() => {
               setSelectedTab(1);
-            }}
-          >
+            }}>
             {`Estimations ${
               estimations?.[0]?.estimatedDate
                 ? "for " +
@@ -208,6 +232,14 @@ const MipList: React.FC<IMipList> = () => {
         open={confirmDeletion}
         onClose={closeConfirmationDelete}
         onSubmit={handleDeleteMip}
+        submitProps={{
+          label: "Delete",
+          disabled: false,
+          props: {
+            variant: "contained",
+            color: "error",
+          },
+        }}
       />
       <CurrencyListDialog
         open={showCurrencyListDialog}

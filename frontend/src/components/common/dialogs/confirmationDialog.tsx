@@ -1,5 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -18,6 +18,7 @@ interface IConfirmation {
   submitProps?: {
     label: string;
     disabled: boolean;
+    props?: ButtonProps;
   };
   onSubmit?: () => void;
 }
@@ -44,8 +45,7 @@ const ConfirmationDialog: React.FC<IConfirmation> = ({
       open={open}
       onClose={handleClose}
       aria-labelledby="confirmation-labael"
-      aria-describedby="confirmation-description"
-    >
+      aria-describedby="confirmation-description">
       <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>
       {subtitle && (
         <DialogContent>
@@ -56,7 +56,7 @@ const ConfirmationDialog: React.FC<IConfirmation> = ({
       )}
       <DialogActions>
         <Button onClick={handleClose}>{cancelProps.label}</Button>
-        <Button onClick={onSubmit} autoFocus>
+        <Button onClick={onSubmit} autoFocus {...submitProps?.props}>
           {submitProps.label}
         </Button>
       </DialogActions>

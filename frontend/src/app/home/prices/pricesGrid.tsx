@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Stack, TextField } from "@mui/material";
+import { Button, ButtonGroup, Stack, TextField } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -199,26 +199,57 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
         // sx={{ width: "100%" }}
         sx={(theme) => ({
           width: "100%",
-          [theme.breakpoints.only("sm")]: {
-            display: "block",
-          },
+          display: "flex",
+          justifyContent: "space-between",
           [theme.breakpoints.only("xs")]: {
             display: "block",
           },
-        })}
-      >
-        <Tabs
+        })}>
+        {/* <Tabs
           tabs={Object.keys(CurrencyTypes)}
           value={value}
           onChange={(val) => setValue(val as typeof value)}
-        />
+        /> */}
+        <ButtonGroup
+          variant="contained"
+          aria-label="Basic button group"
+          sx={{
+            height: "40px",
+            mb: 2,
+            ".MuiButtonBase-root": {
+              border: "none",
+              ":hover": {
+                backgoundColor: "transparent",
+              },
+            },
+          }}>
+          {Object.keys(CurrencyTypes).map((val) => (
+            <Button
+              key={val}
+              variant={value === val ? "contained" : "outlined"}
+              onClick={() => {
+                setValue(val as typeof value);
+              }}
+              sx={{ fontWeight: "normal", fontSize: "13px" }}>
+              {val}
+            </Button>
+          ))}
+        </ButtonGroup>
 
         <TextField
           variant="standard"
           value={searchValue}
           onChange={handleSearchValueChange}
           label="Search"
-          sx={{ mb: 1 }}
+          sx={(theme) => ({
+            mb: 1,
+            [theme.breakpoints.only("sm")]: {
+              ml: "auto",
+            },
+            [theme.breakpoints.only("xs")]: {
+              display: "none",
+            },
+          })}
         />
       </Stack>
       <DataGrid
