@@ -5,6 +5,8 @@ import {
   Button,
   ButtonGroup,
   Grid,
+  Input,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -27,6 +29,7 @@ import { PriceEstimationlist } from "../estimations/price-estimation-card";
 import { NoResults } from "@/static/svgs/noresult";
 import { Finance1 } from "@/static/svgs/finance";
 import { Finance2 } from "@/static/svgs/finance2";
+import { debouncer } from "@/core/utils/utility";
 
 interface IMipList {}
 
@@ -56,6 +59,8 @@ const MipList: React.FC<IMipList> = () => {
       return map;
     }, [currentPrices]);
   const [estimations, setEstimations] = useState<EstimatedPricesSchemaType>([]);
+  const [filteredEstimations, setFilteredEstimations] =
+    useState<EstimatedPricesSchemaType>([]);
 
   const {
     mipList: mips,
@@ -80,6 +85,7 @@ const MipList: React.FC<IMipList> = () => {
       try {
         const estimates = await getTomorrowEstimations();
         setEstimations(estimates);
+        setFilteredEstimations(estimates);
       } catch (error) {
         console.log(error);
       }
@@ -107,6 +113,20 @@ const MipList: React.FC<IMipList> = () => {
       setSelectedTab(1);
     } else setSelectedTab(0);
   }, [mips?.length, isLoading]);
+
+  const onEstimatedStockSearch = (searchValue?: string) => {
+    const filterEstimations = () => {
+      if (!searchValue) {
+        setFilteredEstimations([...estimations]);
+        return;
+      }
+      const filteredEstimations = estimations.filter((estimation) =>
+        estimation.assetName?.toLowerCase().includes(searchValue?.toLowerCase())
+      );
+      setFilteredEstimations(filteredEstimations);
+    };
+    debouncer(filterEstimations)();
+  };
 
   const renderMips = () => {
     if (!mips?.length)
@@ -174,8 +194,11 @@ const MipList: React.FC<IMipList> = () => {
         spacing={2}
         height={"100%"}
         alignItems={"start"}
-        justifyContent={"space-between"}>
-        {estimations?.map((estimation, index) => (
+        overflow={"auto"}
+        p={2}
+        pt={0}
+        maxHeight={360}>
+        {filteredEstimations?.map((estimation, index) => (
           <Grid item md={3} sm={6} xs={12} key={index}>
             <PriceEstimationlist data={estimation} />
           </Grid>
@@ -187,43 +210,70 @@ const MipList: React.FC<IMipList> = () => {
   return (
     <>
       <Grid container gap={2}>
-        <ButtonGroup
-          variant="contained"
-          aria-label="Basic button group"
-          sx={{
-            ".MuiButtonBase-root": {
-              border: "none",
-              ":hover": {
-                backgoundColor: "transparent",
-              },
-            },
-          }}>
-          <Button
-            // disabled={!mips?.length}
-            variant={selectedTab === 0 ? "contained" : "outlined"}
-            onClick={() => {
-              setSelectedTab(0);
-            }}>
-            My Mips
-          </Button>
-          <Button
-            variant={selectedTab === 1 ? "contained" : "outlined"}
-            onClick={() => {
-              setSelectedTab(1);
-            }}>
-            {`Estimations ${
-              estimations?.[0]?.estimatedDate
-                ? "for " +
-                  new Date(estimations?.[0]?.estimatedDate)?.toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                    }
-                  )
-                : ""
-            }`}
-          </Button>
-        </ButtonGroup>
+        <Grid container alignItems={"center"} spacing={2}>
+          <Grid item md={6} lg={6}>
+            <ButtonGroup
+              variant="contained"
+              aria-label="Basic button group"
+              sx={{
+                mb: 2,
+                ".MuiButtonBase-root": {
+                  border: "none",
+                  ":hover": {
+                    backgoundColor: "transparent",
+                  },
+                },
+              }}>
+              <Button
+                variant={selectedTab === 0 ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTab(0);
+                }}>
+                My Mips
+              </Button>
+              <Button
+                variant={selectedTab === 1 ? "contained" : "outlined"}
+                onClick={() => {
+                  setSelectedTab(1);
+                }}>
+                {`Estimations ${
+                  estimations?.[0]?.estimatedDate
+                    ? "for " +
+                      new Date(
+                        estimations?.[0]?.estimatedDate
+                      )?.toLocaleDateString("en-US", {
+                        weekday: "long",
+                      })
+                    : ""
+                }`}
+              </Button>
+            </ButtonGroup>
+          </Grid>
+          {!!estimations?.length && (
+            <Grid
+              item
+              md={6}
+              lg={6}
+              display={"flex"}
+              pr={5}
+              // ml={2}
+              justifyContent={"flex-end"}>
+              <TextField
+                variant="outlined"
+                placeholder="Search"
+                sx={(theme) => ({
+                  mb: 1,
+                  ".MuiOutlinedInput-root": {
+                    height: "40px",
+                  },
+                })}
+                onChange={(e) => {
+                  onEstimatedStockSearch(e.target.value);
+                }}
+              />
+            </Grid>
+          )}
+        </Grid>
         {selectedTab === 0 && renderMips()}
         {selectedTab === 1 && renderEstimations()}
       </Grid>

@@ -6,6 +6,7 @@ import yfinance as yf
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 def predict_next_day_price(company):
     try:
@@ -45,10 +46,6 @@ def predict_next_day_price(company):
         model.compile(optimizer="adam", loss="mean_squared_error")
         model.fit(x_train, y_train, epochs=25, batch_size=32)
 
-        # # Test on the recent data
-        # start_test = dt.datetime(2018, 1, 1)
-        # end_test = dt.datetime.now()
-        # test_data = yf.download(company, start=start_test, end=end_test)
         actual_prices = data['Close'].values
 
         if data.empty:
@@ -69,6 +66,14 @@ def predict_next_day_price(company):
         prediction = model.predict(real_data)
         prediction = scaler.inverse_transform(prediction)
 
+        # Calculate model score
+        predicted_train_prices = model.predict(x_train)
+        predicted_train_prices = scaler.inverse_transform(predicted_train_prices)
+        y_train_actual = scaler.inverse_transform(y_train.reshape(-1, 1))
+
+        mse = mean_squared_error(y_train_actual, predicted_train_prices)
+        mae = mean_absolute_error(y_train_actual, predicted_train_prices)
+
         # Today's price
         today_price = actual_prices[-1] if len(actual_prices) > 0 else None
 
@@ -83,12 +88,15 @@ def predict_next_day_price(company):
 
         return {
             "assetName": company,
-            "currentPrice": today_price[0],
+            "currentPrice": today_price,
             "currentDate": today_date.strftime("%Y-%m-%d"),
             "estimatedPrice": prediction[0][0],
-            "estimatedPriceDate": tomorrow_date.strftime("%Y-%m-%d")
+            "estimatedPriceDate": tomorrow_date.strftime("%Y-%m-%d"),
+            "mse": mse,
+            "mae": mae
         }
 
     except Exception as e:
         return {"error": str(e)}
+
 

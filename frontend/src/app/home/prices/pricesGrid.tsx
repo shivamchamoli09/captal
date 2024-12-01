@@ -219,7 +219,7 @@ const PricesGrid: React.FC<IPricesGrid> = () => {
             ".MuiButtonBase-root": {
               border: "none",
               ":hover": {
-                backgoundColor: "transparent",
+                backgoundColor: "#0f5940",
               },
             },
           }}>
