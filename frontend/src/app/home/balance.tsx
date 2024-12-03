@@ -24,7 +24,6 @@ const Balance: React.FC<IBalance> = (props) => {
   const latestBal = useMemo(() => {
     if (!mipCurrentBalanceById?.size) return 0;
     let total = 0;
-    console.log('mipCurrentBalanceById***', mipCurrentBalanceById)
     for (const v of mipCurrentBalanceById?.values()) {
       total += v;
     }
