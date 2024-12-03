@@ -23,14 +23,25 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
         display={"flex"}
         flexDirection={"column"}
         sx={{ justifyContent: "space-between" }}
-        gap={2}
-      >
+        gap={2}>
         <Balance />
 
         <TopBadPerformer />
       </Grid>
 
-      <Grid item xs={12} md={9}>
+      <Grid
+        item
+        xs={12}
+        md={9}
+        sx={(theme) =>
+          mipList?.length
+            ? {}
+            : {
+                [theme.breakpoints.only("xs")]: {
+                  display: "none",
+                },
+              }
+        }>
         <Card sx={{ height: "100%" }}>
           {mipList?.length || isLoading ? (
             <Grid container spacing={2} justifyContent={"space-between"}>
@@ -43,7 +54,7 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
             </Grid>
           ) : (
             <Box
-              sx={{
+              sx={(theme) => ({
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
@@ -51,8 +62,7 @@ const MyInvestments: React.FC<ITopCurrencies> = () => {
                 flexDirection: "column",
                 pl: 4,
                 pr: 4,
-              }}
-            >
+              })}>
               <Typography variant="h6" gutterBottom>
                 Embark on a journey of financial empowerment and growth with our
                 innovative MIP (Mixed Investment Plan) solutions, designed to

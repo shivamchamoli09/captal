@@ -8,8 +8,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-def predict_next_day_price(company):
+
+def predict_next_day_price(company_details):
     try:
+        company = company_details['symbol']
         print("Starting prediction for ", company)
         # Data preparation
         start_train = dt.datetime(2018, 1, 1)
@@ -87,8 +89,8 @@ def predict_next_day_price(company):
             tomorrow_date = today_date + dt.timedelta(days=1)
 
         return {
-            "assetName": company,
-            "currentPrice": today_price,
+            "assetName": company_details['name'],
+            "currentPrice": today_price[0],
             "currentDate": today_date.strftime("%Y-%m-%d"),
             "estimatedPrice": prediction[0][0],
             "estimatedPriceDate": tomorrow_date.strftime("%Y-%m-%d"),
@@ -98,5 +100,3 @@ def predict_next_day_price(company):
 
     except Exception as e:
         return {"error": str(e)}
-
-

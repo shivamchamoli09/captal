@@ -197,7 +197,12 @@ const MipList: React.FC<IMipList> = () => {
         overflow={"auto"}
         p={2}
         pt={0}
-        maxHeight={360}>
+        maxHeight={360}
+        sx={(theme) => ({
+          [theme.breakpoints.only("xs")]: {
+            maxHeight: 600,
+          },
+        })}>
         {filteredEstimations?.map((estimation, index) => (
           <Grid item md={3} sm={6} xs={12} key={index}>
             <PriceEstimationlist data={estimation} />
@@ -211,7 +216,18 @@ const MipList: React.FC<IMipList> = () => {
     <>
       <Grid container gap={2}>
         <Grid container alignItems={"center"} spacing={2}>
-          <Grid item md={6} lg={6}>
+          <Grid
+            item
+            md={6}
+            lg={6}
+            sx={(theme) => ({
+              [theme.breakpoints.only("xs")]: {
+                width: "100%",
+                justifyContent: "center",
+                display: "flex",
+                pr: 2,
+              },
+            })}>
             <ButtonGroup
               variant="contained"
               aria-label="Basic button group"
@@ -249,15 +265,22 @@ const MipList: React.FC<IMipList> = () => {
               </Button>
             </ButtonGroup>
           </Grid>
-          {!!estimations?.length && (
+          {!!estimations?.length && selectedTab === 1 && (
             <Grid
               item
               md={6}
               lg={6}
               display={"flex"}
               pr={5}
-              // ml={2}
-              justifyContent={"flex-end"}>
+              justifyContent={"flex-end"}
+              sx={(theme) => ({
+                [theme.breakpoints.only("xs")]: {
+                  width: "100%",
+                  pr: 3,
+                  ml: 2,
+                  justifyContent: "center",
+                },
+              })}>
               <TextField
                 variant="outlined"
                 placeholder="Search"
@@ -265,6 +288,9 @@ const MipList: React.FC<IMipList> = () => {
                   mb: 1,
                   ".MuiOutlinedInput-root": {
                     height: "40px",
+                  },
+                  [theme.breakpoints.only("xs")]: {
+                    width: "100%",
                   },
                 })}
                 onChange={(e) => {
